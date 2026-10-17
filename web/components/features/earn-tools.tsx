@@ -55,7 +55,7 @@ export function TripTab() {
               <NumField form={form as never} name="tolls" label={t("f.tolls", "Tolls (₹)")} />
               <NumField form={form as never} name="other_expenses" label={t("f.otherx", "Other expenses (₹)")} />
             </div>
-            <details className="rounded-lg bg-secondary p-3"><summary className="cursor-pointer text-sm font-semibold">{t("trip.assume", "Assumptions you can change")}</summary>
+            <details open={["mileage_kmpl", "fuel_price", "wear_per_km"].some((k) => k in form.formState.errors) || undefined} className="rounded-lg bg-secondary p-3"><summary className="cursor-pointer text-sm font-semibold">{t("trip.assume", "Assumptions you can change")}</summary>
               <div className="mt-2 grid gap-3 sm:grid-cols-3">
                 <NumField form={form as never} name="mileage_kmpl" label={t("f.mileage", "Fuel efficiency (km per litre)")} />
                 <NumField form={form as never} name="fuel_price" label={t("f.fuelprice", "Fuel price (₹ per litre)")} />

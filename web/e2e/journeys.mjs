@@ -62,6 +62,7 @@ await go("/earnings?tab=trip");
 await clickText("Calculate");
 check("trip: result with break-even and calculation shown", await waitText("Break-even fare") && (await text()).includes("How this was calculated"));
 check("trip: compares with own history (demo worker)", (await text()).includes("Your own saved shifts average"));
+await page.evaluate(() => document.querySelectorAll("details").forEach((d) => { d.open = true; }));   // the user expands "Assumptions"
 await setInput("mileage_kmpl", "0"); await clickText("Calculate");
 check("trip: validation blocks bad mileage", await waitText("Must be more than 0"));
 
@@ -107,11 +108,16 @@ check("impact: complaint submitted counted", /1\s*\n?\s*Complaints submitted/.te
 // ---------- 7. Chat replies in the language asked ----------
 await go("/saathi?lang=en");
 await page.type("#chat-in", "मुझे पेंशन स्कीम बताओ"); await page.keyboard.press("Enter");
-check("chat: Hindi question -> Hindi reply", await waitText("पेंशन", 8000) && /[ऀ-ॿ]{5,}/.test((await text()).split("मुझे पेंशन स्कीम बताओ")[1] || ""));
+const afterQ = async (q, re, ms = 10000) => { const t0 = Date.now(); while (Date.now() - t0 < ms) { if (re.test((await text()).split(q).pop() || "")) return true; await sleep(150); } return false; };
+const chatReady = () => page.waitForFunction(() => { const el = document.querySelector("#chat-in"); return el && !el.disabled; }, { timeout: 15000 });
+check("chat: Hindi question -> Hindi reply", await afterQ("मुझे पेंशन स्कीम बताओ", /[ऀ-ॿ]{5,}/), (await text()).slice(-600));
+await chatReady();
 await page.type("#chat-in", "trip fare 120 distance 8 km"); await page.keyboard.press("Enter");
-check("chat: English question -> English reply", await waitText("Verdict"));
+check("chat: English question -> English reply", await waitText("Verdict"), (await text()).slice(-400));
+await chatReady();
 await page.type("#chat-in", "ਅੱਜ 850 ਕਮਾਏ"); await page.keyboard.press("Enter");
-check("chat: Punjabi question -> Punjabi reply", await waitText("ਲਿਖ ਲਿਆ", 8000) || await waitText("ਕਮਾਏ", 8000));
+check("chat: Punjabi question -> Punjabi reply", await afterQ("ਅੱਜ 850 ਕਮਾਏ", /[਀-੿]{4,}/));
+await chatReady();
 await page.type("#chat-in", "mera accident ho gaya bachao"); await page.keyboard.press("Enter");
 check("chat: crisis escalates to 112", await waitText("112"));
 

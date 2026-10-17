@@ -9,13 +9,14 @@ import { FULL_UI } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { LanguageInfo, Pending } from "@/lib/types";
 import { Select } from "@/components/ui/form-controls";
+import { Skeleton } from "@/components/ui/misc";
 
 const STATIC_LANGS: LanguageInfo[] = [
   { code: "en", name: "English", speech: "en-IN" }, { code: "hi", name: "हिन्दी", speech: "hi-IN" }, { code: "pa", name: "ਪੰਜਾਬੀ", speech: "pa-IN" },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
-  const { t, lang, setLang, mode, setMode, userId, refreshKey } = useApp();
+  const { t, lang, setLang, mode, setMode, userId, refreshKey, ready } = useApp();
   const path = usePathname();
   const [langs, setLangs] = useState<LanguageInfo[]>(STATIC_LANGS);
   const [pending, setPending] = useState<Pending[]>([]);
@@ -85,7 +86,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <button onClick={() => setMode("real")} className="underline">{t("demo.exit", "Switch to my data")}</button>
           </div>
         )}
-        <main id="main" className="mx-auto w-full max-w-5xl flex-1 p-4 pb-28 md:pb-8">{children}</main>
+        <main id="main" className="mx-auto w-full max-w-5xl flex-1 p-4 pb-28 md:pb-8">
+          {/* pages need the device id + saved language, which only exist after the first client effect */}
+          {ready && userId ? children : <div className="space-y-3" aria-busy="true"><Skeleton className="h-24" /><Skeleton className="h-40" /><Skeleton className="h-40" /></div>}
+        </main>
         <nav className="no-print fixed inset-x-0 bottom-0 z-30 grid grid-cols-4 border-t bg-card md:hidden" aria-label="Main">
           {main.map((n) => (
             <Link key={n.href} href={n.href} aria-current={active(n.href) ? "page" : undefined}
