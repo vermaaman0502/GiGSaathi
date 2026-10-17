@@ -1,0 +1,152 @@
+[
+  {
+    "id": "eshram",
+    "title": "e-Shram registration (unorganised / gig workers)",
+    "keywords": "e-shram eshram registration unorganised gig platform worker card UAN accident insurance ई-श्रम पंजीकरण",
+    "summary": "National database of unorganised workers. Registration is free. Age 16-59, not an EPFO/ESIC member and not an income-tax payer. Gives an e-Shram card and, through it, access to other schemes; PMSBY accident cover of Rs 2 lakh (death/permanent disability) for the first year.",
+    "documents": ["Aadhaar", "Mobile linked to Aadhaar", "Bank account / IFSC"],
+    "how_to_apply": "Register free at eshram.gov.in or at the nearest CSC. Helpline 14434.",
+    "source": "https://eshram.gov.in",
+    "last_checked": "seed data - confirm on the official portal"
+  },
+  {
+    "id": "pmjay",
+    "title": "Ayushman Bharat PM-JAY health cover",
+    "keywords": "ayushman bharat pmjay health insurance hospital treatment 5 lakh आयुष्मान",
+    "summary": "Cashless hospital cover up to Rs 5 lakh per family per year at empanelled hospitals for eligible families. The 2025 Union Budget announced PM-JAY cover for registered platform/gig workers; check current status before applying.",
+    "documents": ["Aadhaar", "Ration card or eligibility proof", "e-Shram card (for gig workers)"],
+    "how_to_apply": "Check eligibility at pmjay.gov.in or call 14555; apply at an Ayushman Mitra desk, empanelled hospital or CSC.",
+    "source": "https://pmjay.gov.in",
+    "last_checked": "seed data - confirm on the official portal"
+  },
+  {
+    "id": "pmsym",
+    "title": "PM Shram Yogi Maandhan (PM-SYM) pension",
+    "keywords": "pm-sym pension old age maandhan retirement 3000 पेंशन श्रम योगी",
+    "summary": "Pension of Rs 3,000 a month after age 60 for unorganised workers aged 18-40 earning up to Rs 15,000 a month. You pay Rs 55-200 a month depending on entry age and the Government matches it.",
+    "documents": ["Aadhaar", "Savings bank account / Jan Dhan", "Mobile number"],
+    "how_to_apply": "Enrol at a CSC with Aadhaar and bank passbook; the first contribution is paid in cash.",
+    "source": "https://maandhan.in",
+    "last_checked": "seed data - confirm on the official portal"
+  },
+  {
+    "id": "apy",
+    "title": "Atal Pension Yojana (APY)",
+    "keywords": "atal pension yojana apy pension retirement savings",
+    "summary": "Guaranteed monthly pension of Rs 1,000-5,000 from age 60 for anyone aged 18-40 with a bank account. Monthly contribution depends on your age and chosen pension.",
+    "documents": ["Bank account", "Aadhaar", "Mobile number"],
+    "how_to_apply": "Apply at your bank branch or through net banking.",
+    "source": "https://www.npscra.nsdl.co.in/scheme-details.php",
+    "last_checked": "seed data - confirm on the official portal"
+  },
+  {
+    "id": "pmsby",
+    "title": "PM Suraksha Bima Yojana (accident cover)",
+    "keywords": "pmsby accident insurance disability death suraksha bima cheap premium दुर्घटना बीमा",
+    "summary": "Accident death/disability cover of Rs 2 lakh (Rs 1 lakh partial disability) for age 18-70 with a bank account. Premium is about Rs 20 a year, auto-debited from your account.",
+    "documents": ["Bank account", "Aadhaar"],
+    "how_to_apply": "Enrol at your bank or through net banking before 31 May each year.",
+    "source": "https://jansuraksha.gov.in",
+    "last_checked": "seed data - confirm on the official portal"
+  },
+  {
+    "id": "pmjjby",
+    "title": "PM Jeevan Jyoti Bima Yojana (life cover)",
+    "keywords": "pmjjby life insurance death cover jeevan jyoti bima जीवन ज्योति",
+    "summary": "Life cover of Rs 2 lakh for age 18-50 with a bank account. Premium is about Rs 436 a year, auto-debited.",
+    "documents": ["Bank account", "Aadhaar"],
+    "how_to_apply": "Enrol at your bank branch or net banking.",
+    "source": "https://jansuraksha.gov.in",
+    "last_checked": "seed data - confirm on the official portal"
+  },
+  {
+    "id": "svanidhi",
+    "title": "PM SVANidhi (street vendor loan)",
+    "keywords": "svanidhi street vendor loan working capital hawker फेरीवाला लोन",
+    "summary": "Collateral-free working-capital loan for street vendors starting at Rs 15,000, with larger loans on timely repayment and a digital-payment cash-back.",
+    "documents": ["Vending certificate / letter of recommendation", "Aadhaar", "Bank account"],
+    "how_to_apply": "Apply at pmsvanidhi.mohua.gov.in, a bank branch or CSC.",
+    "source": "https://pmsvanidhi.mohua.gov.in",
+    "last_checked": "seed data - confirm on the official portal"
+  },
+  {
+    "id": "mudra",
+    "title": "PM MUDRA loans",
+    "keywords": "mudra loan business shishu kishor tarun small business vehicle मुद्रा",
+    "summary": "Collateral-free small-business loans: Shishu (up to Rs 50,000), Kishore (up to Rs 5 lakh), Tarun (up to Rs 10 lakh), with higher limits for Tarun Plus. Useful for buying a vehicle or tools instead of a high-interest app loan.",
+    "documents": ["Aadhaar", "Address proof", "Business/work proof", "Bank statement"],
+    "how_to_apply": "Apply at any bank, NBFC or MFI, or at udyamimitra.in.",
+    "source": "https://www.mudra.org.in",
+    "last_checked": "seed data - confirm on the official portal"
+  },
+  {
+    "id": "social_security_code",
+    "title": "Code on Social Security 2020 - gig and platform workers",
+    "keywords": "code social security gig worker platform aggregator welfare fund rights law",
+    "summary": "The Code recognises gig and platform workers and requires aggregators to contribute 1-2% of annual turnover (capped at 5% of payments to workers) to a social security fund. Implementation depends on rules and state action - check current status.",
+    "documents": [],
+    "how_to_apply": "Register on e-Shram to be counted for benefits when schemes roll out.",
+    "source": "https://labour.gov.in",
+    "last_checked": "seed data - confirm on the official portal"
+  },
+  {
+    "id": "state_gig_laws",
+    "title": "State gig-worker welfare laws (Rajasthan, Karnataka and others)",
+    "keywords": "rajasthan karnataka state gig worker welfare board law cess registration राजस्थान कर्नाटक",
+    "summary": "Some states, including Rajasthan (2023) and Karnataka (2025), have passed laws for platform-based gig workers with welfare boards, registration and grievance mechanisms. Rules differ by state - ask the state labour department.",
+    "documents": ["Aadhaar", "Platform ID / payout proof"],
+    "how_to_apply": "Contact your state labour department or welfare board office or CSC.",
+    "source": "https://labour.gov.in",
+    "last_checked": "seed data - confirm with your state labour department"
+  },
+  {
+    "id": "nalsa",
+    "title": "Free legal aid (NALSA / DLSA)",
+    "keywords": "legal aid lawyer free court nalsa 15100 dlsa dispute वकील कानूनी सहायता",
+    "summary": "Free legal services for eligible people including workers with low income, women and SC/ST. Call 15100 or visit the District Legal Services Authority.",
+    "documents": ["ID proof", "Income proof (if asked)"],
+    "how_to_apply": "Call 15100 or visit nalsa.gov.in / the district court's DLSA office.",
+    "source": "https://nalsa.gov.in",
+    "last_checked": "seed data - confirm on the official portal"
+  },
+  {
+    "id": "unpaid_wages",
+    "title": "Unpaid wages - your rights",
+    "keywords": "unpaid wages salary due contractor minimum wage labour commissioner payment मजदूरी बकाया",
+    "summary": "Employers must pay at least the state minimum wage on time. If wages are unpaid, keep a record (wage diary, messages, photos of work), send a written notice, then complain to the Labour Commissioner or Inspector. Under the Code on Wages, 2019 delayed or unpaid wages are an offence.",
+    "documents": ["Wage diary / messages / payment proofs", "ID proof"],
+    "how_to_apply": "Written notice first, then a complaint at the district Labour Office.",
+    "source": "https://labour.gov.in",
+    "last_checked": "seed data - confirm on the official portal"
+  },
+  {
+    "id": "pmkvy",
+    "title": "Free skill training (Skill India / PMKVY)",
+    "keywords": "skill training course free certificate upskill driver electrician learn PMKVY कौशल",
+    "summary": "Short free or subsidised training with certificates in trades such as driving, electrician, plumbing, beauty and healthcare assistance. Certified skills help you move to higher-paid work.",
+    "documents": ["Aadhaar", "Bank account", "Education proof (if any)"],
+    "how_to_apply": "Find a centre at skillindiadigital.gov.in or the nearest training centre.",
+    "source": "https://www.skillindiadigital.gov.in",
+    "last_checked": "seed data - confirm on the official portal"
+  },
+  {
+    "id": "women_safety",
+    "title": "Safety help for women workers",
+    "keywords": "women safety harassment night ride helpline 181 POSH complaint महिला सुरक्षा",
+    "summary": "Call 181 (women helpline) or 112 in danger. Share live location with a trusted contact before trips, avoid isolated drop-offs at night and report the booking to the platform. Harassment at work can be reported to an Internal or Local Committee under the POSH Act.",
+    "documents": [],
+    "how_to_apply": "Call 181 / 112; for work harassment contact the District Local Committee.",
+    "source": "https://wcd.nic.in",
+    "last_checked": "seed data - confirm on the official portal"
+  },
+  {
+    "id": "accident_first_hour",
+    "title": "Accident - first hour guide",
+    "keywords": "accident crash injury insurance claim first aid hospital FIR दुर्घटना बीमा",
+    "summary": "1) Move to safety and call 112/108. 2) Do not move a badly hurt person. 3) Photograph the scene, vehicle and injuries. 4) Note witness numbers. 5) File an FIR / get a police report. 6) Inform your insurer and the platform within 24 hours and keep hospital bills for the claim.",
+    "documents": ["Driving licence", "RC", "Insurance policy", "FIR copy", "Hospital bills"],
+    "how_to_apply": "Call the insurer's claim helpline; ask the hospital for discharge summary and bills.",
+    "source": "https://morth.nic.in",
+    "last_checked": "seed data - confirm with your insurer"
+  }
+]

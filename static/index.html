@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GigSaathi</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:640px;margin:0 auto;padding:16px;background:#f6f7f9;color:#1b1f23}
+h1{font-size:1.4rem;margin:0 0 4px}p.sub{margin:0 0 12px;color:#555}
+#log{background:#fff;border:1px solid #ddd;border-radius:10px;padding:10px;height:55vh;overflow:auto}
+.m{margin:6px 0;padding:8px 10px;border-radius:10px;white-space:pre-wrap;max-width:85%}
+.u{background:#dcf8c6;margin-left:auto}.b{background:#eef0f3}
+form{display:flex;gap:6px;margin-top:10px}input{flex:1;padding:12px;border:1px solid #ccc;border-radius:8px;font-size:1rem}
+button{padding:12px 14px;border:0;border-radius:8px;background:#0b7a53;color:#fff;font-size:1rem}
+.chips button{background:#fff;color:#0b7a53;border:1px solid #0b7a53;margin:2px;padding:6px 10px;font-size:.85rem}
+</style></head><body>
+<h1>GigSaathi</h1><p class="sub">Your saathi for money, safety and rights. Type or tap the mic (Hindi/English).</p>
+<div class="chips" id="chips"></div>
+<div id="log" aria-live="polite"></div>
+<form id="f"><input id="t" placeholder="e.g. trip 120 rupees 8 km" autocomplete="off"><button type="button" id="mic" aria-label="Speak">🎤</button><button>Send</button></form>
+<script>
+const log=document.getElementById('log'),t=document.getElementById('t');
+const uid=(localStorage.uid=localStorage.uid||Math.random().toString(36).slice(2));
+function add(txt,c){const d=document.createElement('div');d.className='m '+c;d.textContent=txt;log.appendChild(d);log.scrollTop=log.scrollHeight}
+async function send(txt){if(!txt.trim())return;add(txt,'u');t.value='';
+ try{const r=await fetch('/chat',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({user:uid,text:txt})});
+ const j=await r.json();add(j.reply,'b');if('speechSynthesis' in window){const u=new SpeechSynthesisUtterance(j.reply);u.lang=/[ऀ-ॿ]/.test(j.reply)?'hi-IN':'en-IN';speechSynthesis.speak(u)}}
+ catch(e){add('Network problem. Please try again.','b')}}
+document.getElementById('f').onsubmit=e=>{e.preventDefault();send(t.value)};
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;const mic=document.getElementById('mic');
+if(SR){mic.onclick=()=>{const r=new SR();r.lang='hi-IN';r.onresult=e=>send(e.results[0][0].transcript);r.start()}}else mic.style.display='none';
+['Which schemes can I get?','trip 120 rupees 8 km','loan 10000 emi 1200 for 12 months','aaj 850 kamaye','chai 20 kharcha','aaj ka hisab kitna'].forEach(s=>{const b=document.createElement('button');b.textContent=s;b.onclick=()=>send(s);document.getElementById('chips').appendChild(b)});
+</script></body></html>
