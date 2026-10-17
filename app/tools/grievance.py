@@ -28,6 +28,20 @@ _BODY = {
 }
 
 
+_HI_SUBJECT = {
+    "deactivation": "आईडी बंद किए जाने के विरुद्ध अपील",
+    "wage_due": "बकाया मज़दूरी के भुगतान की सूचना",
+    "deduction": "अनजानी कटौती की शिकायत",
+    "general": "शिकायत",
+}
+_HI_BODY = {
+    "deactivation": "मेरी पार्टनर आईडी {incident_date} को बंद कर दी गई। मेरा अनुरोध है कि इसका लिखित कारण बताया जाए, निर्णय की समीक्षा हो और मेरी आईडी फिर से चालू की जाए। मैंने {company} के साथ काम किया है। कृपया नीचे दिए सबूतों पर विचार करें।",
+    "wage_due": "मैंने आपके यहाँ काम किया और {incident_date} तक के काम के ₹{amount:.0f} बकाया हैं। अनुरोध है कि इस पत्र के 7 दिन के भीतर भुगतान करें, अन्यथा मैं श्रम विभाग से संपर्क करूँगा/करूँगी।",
+    "deduction": "{incident_date} के मेरे भुगतान में ₹{amount:.0f} की कटौती दिख रही है जो मुझे समझ नहीं आई। कृपया पूरा ब्योरा दें और बिना उचित कारण काटी गई रकम लौटाएँ।",
+    "general": "मैं {incident_date} को हुई निम्न समस्या के बारे में लिख रहा/रही हूँ: {details}",
+}
+
+
 def draft(
     kind: str,
     name: str,
@@ -36,6 +50,7 @@ def draft(
     amount: float = 0.0,
     incident_date: Optional[str] = None,
     evidence: Optional[List[str]] = None,
+    lang: str = "en",
 ) -> Dict:
     if kind not in KINDS:
         raise ValueError(f"kind must be one of {sorted(KINDS)}")
@@ -54,4 +69,15 @@ def draft(
         f"I request a reply within 15 days. Thank you for your attention.\n\n"
         f"Sincerely,\n{name}"
     )
-    return {"kind": kind, "letter": letter, "ladder": LADDER, "follow_up_days": [7, 15, 30]}
+    out = {"kind": kind, "letter": letter, "ladder": LADDER, "follow_up_days": [7, 15, 30]}
+    if lang == "hi":
+        hbody = _HI_BODY[kind].format(company=company, amount=amount, incident_date=incident_date, details=details or "(कृपया सबूत देखें)")
+        if details and kind != "general":
+            hbody += f"\n\nविवरण: {details}"
+        hev = "\n".join(f"  {i}. {e}" for i, e in enumerate(evidence, 1)) or "  (कोई नहीं)"
+        out["letter_local"] = (
+            f"सेवा में,\nशिकायत अधिकारी,\n{company}\n\nदिनांक: {date.today().isoformat()}\n"
+            f"विषय: {_HI_SUBJECT[kind]}\n\nमहोदय/महोदया,\n\n{hbody}\n\nसंलग्न सबूत:\n{hev}\n\n"
+            f"कृपया 15 दिन के भीतर उत्तर दें। धन्यवाद।\n\nभवदीय,\n{name}"
+        )
+    return out

@@ -13,9 +13,12 @@ HELPLINES = (
 )
 
 CRISIS_WORDS = [
-    "suicide", "kill myself", "marna chahta", "marna chahti", "jaan se maar", "bachao", "bachaao",
+    "suicide", "kill myself", "marna chahta", "marna chahti", "jaan se maar", "bachao", "bachaao", "bachav",
     "accident", "attack", "harass", "molest", "chhed", "threat", "dhamki", "beaten", "maar pit",
-    "जान से", "बचाओ", "दुर्घटना", "हमला", "छेड़", "धमकी", "आत्महत्या",
+    "जान से", "बचाओ", "दुर्घटना", "हमला", "छेड़", "धमकी", "आत्महत्या", "वाचवा", "अपघात",
+    "বাঁচাও", "দুর্ঘটনা", "হুমকি", "காப்பாற்று", "விபத்து", "மிரட்டல்", "కాపాడండి", "ప్రమాదం", "బెదిరింపు",
+    "બચાવો", "અકસ્માત", "ધમકી", "ಕಾಪಾಡಿ", "ಅಪಘಾತ", "ಬೆದರಿಕೆ", "രക്ഷിക്കൂ", "അപകടം", "ഭീഷണി",
+    "ਬਚਾਓ", "ਹਾਦਸਾ", "ਧਮਕੀ", "ବଞ୍ଚାଅ", "ଦୁର୍ଘଟଣା", "ଧମକ",
 ]
 
 
@@ -32,22 +35,6 @@ def shared_secret(text: str) -> bool:
     return bool(OTP_RE.search(text))
 
 
-def crisis_reply(text: str) -> Optional[Dict]:
+def is_crisis(text: str) -> bool:
     low = text.lower()
-    if any(w in low for w in CRISIS_WORDS):
-        return {
-            "reply": (
-                "I am worried about your safety. Please contact a human right now.\n"
-                f"{HELPLINES}\n"
-                "If you are in danger, move to a safe, public place and share your live location "
-                "with someone you trust. You are not alone."
-            ),
-            "escalate": True,
-        }
-    return None
-
-
-SECRET_WARNING = (
-    "Please never share your OTP, PIN, password or full Aadhaar number with anyone - "
-    "not even with me. I have removed it from your message."
-)
+    return any(w in low for w in CRISIS_WORDS)

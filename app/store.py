@@ -25,6 +25,15 @@ def _db() -> sqlite3.Connection:
               category TEXT, amount REAL, note TEXT
             );
             CREATE INDEX IF NOT EXISTS ix_entries_user ON entries(user, day);
+            CREATE TABLE IF NOT EXISTS vault (
+              user TEXT NOT NULL, doc_type TEXT NOT NULL, expiry TEXT NOT NULL,
+              PRIMARY KEY (user, doc_type)
+            );
+            -- Collective Voice: deliberately has NO user column (anonymous by design).
+            CREATE TABLE IF NOT EXISTS reports (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              day TEXT NOT NULL, company TEXT NOT NULL, issue TEXT NOT NULL, city TEXT NOT NULL
+            );
             """
         )
     return _conn
@@ -60,3 +69,34 @@ def reset_for_tests(path: str) -> None:
         _conn.close()
     _conn = None
     DB_PATH = path
+
+
+def vault_set(user: str, doc_type: str, expiry: str) -> None:
+    with _lock:
+        c = _db()
+        c.execute("INSERT OR REPLACE INTO vault(user,doc_type,expiry) VALUES (?,?,?)", (user, doc_type, expiry))
+        c.commit()
+
+
+def vault_list(user: str) -> List[Dict]:
+    with _lock:
+        return [dict(r) for r in _db().execute("SELECT doc_type, expiry FROM vault WHERE user=? ORDER BY expiry", (user,))]
+
+
+def report_add(company: str, issue: str, city: str) -> None:
+    with _lock:
+        c = _db()
+        c.execute("INSERT INTO reports(day,company,issue,city) VALUES (?,?,?,?)",
+                  (date.today().isoformat(), company.strip().lower(), issue.strip().lower(), city.strip().lower()))
+        c.commit()
+
+
+def report_groups() -> List[Dict]:
+    with _lock:
+        rows = _db().execute("SELECT company, issue, city, COUNT(*) AS n FROM reports GROUP BY company, issue, city ORDER BY n DESC").fetchall()
+        return [dict(r) for r in rows]
+
+
+def monthly_totals(user: str) -> List[Dict]:
+    """Per-category expense totals for the Leak Finder."""
+    return entries(user, "expense")

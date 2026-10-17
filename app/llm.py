@@ -7,7 +7,7 @@ import httpx
 
 SYSTEM = """You are GigSaathi, a friendly assistant for gig and informal workers in India.
 Rules:
-- Reply in the SAME language/script the worker used (Hindi, Hinglish, English, etc.). Use very simple short sentences.
+- Reply in the language named in "Reply language" (native script; Hinglish = Roman Hindi). Use very simple short sentences.
 - Use ONLY the FACTS provided for numbers, scheme details and laws. If the facts do not cover it, say you are not sure and suggest the official helpline or a CSC. Never invent schemes, amounts, dates or laws.
 - Mention the source name when you use a scheme fact.
 - Never ask for OTP, PIN, password or full Aadhaar.
@@ -19,7 +19,7 @@ def enabled() -> bool:
     return bool(os.environ.get("ANTHROPIC_API_KEY"))
 
 
-def compose(user_text: str, facts: str, timeout: float = 20.0) -> Optional[str]:
+def compose(user_text: str, facts: str, reply_language: str = "", timeout: float = 20.0) -> Optional[str]:
     if not enabled():
         return None
     try:
@@ -34,7 +34,7 @@ def compose(user_text: str, facts: str, timeout: float = 20.0) -> Optional[str]:
                 "model": os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-5-5"),
                 "max_tokens": 400,
                 "system": SYSTEM,
-                "messages": [{"role": "user", "content": f"FACTS:\n{facts}\n\nWORKER MESSAGE:\n{user_text}"}],
+                "messages": [{"role": "user", "content": f"FACTS:\n{facts}\n\nReply language: {reply_language or 'same as the worker'}\n\nWORKER MESSAGE:\n{user_text}"}],
             },
             timeout=timeout,
         )

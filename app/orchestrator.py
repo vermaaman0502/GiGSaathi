@@ -1,18 +1,24 @@
-"""Message router: guardrails -> intent -> tools/RAG -> (optional LLM) -> reply.
-Intent detection is keyword-based (English, Hindi, Hinglish) so it works offline; the LLM only
-phrases the answer from verified FACTS."""
+"""Message router: guardrails -> intent -> tools/RAG -> (optional LLM) -> reply in the worker's language.
+Intent detection is keyword-based (English, Hindi, Hinglish + common words in the other languages) so it
+works offline; the LLM only phrases answers from verified FACTS."""
 import re
 from typing import Dict, List, Optional
 
-from . import guardrails, llm, rag, store
+from . import guardrails, i18n, llm, rag, store
 from .tools import earnings, money
 
-DEVANAGARI = re.compile(r"[ऀ-ॿ]")
 NUM = re.compile(r"\d+(?:\.\d+)?")
 
-
-def detect_lang(text: str) -> str:
-    return "hi" if DEVANAGARI.search(text) else "en"
+SOS_W = ["sos", "emergency", "khatre", "खतरे", "জরুরি", "அவசரம்", "అత్యవసరం", "आणीबाणी", "કટોકટી", "ತುರ್ತು", "അടിയന്തരം", "ਐਮਰਜੈਂਸੀ", "ଜରୁରୀ"]
+EXPENSE_W = ["spent", "kharcha", "kharch", "kharid", "खर्च", "expense", "খরচ", "செலவு", "ఖర్చు", "ખર્ચ", "ಖರ್ಚು", "ചെലവ്", "ਖਰਚ", "ଖର୍ଚ୍ଚ"]
+INCOME_W = ["earned", "kamaya", "kamai", "kamaye", "कमाया", "कमाई", "कमावले", "income today", "আয়", "சம்பாதித்", "సంపాదించ", "કમાયા", "ગળ", "ಗಳಿಸ", "സമ്പാദിച്ച", "ਕਮਾਏ", "ଆୟ"]
+SUMMARY_W = ["summary", "hisab", "hisaab", "हिसाब", "हिशोब", "হিসাব", "கணக்கு", "లెక్క", "હિસાબ", "ಲೆಕ್ಕ", "കണക്ക്", "ਹਿਸਾਬ", "ହିସାବ"]
+LOAN_W = ["loan", "emi", "interest", "byaj", "ब्याज", "लोन", "व्याज", "সুদ", "கடன்", "రుణం", "લોન", "ಸಾಲ", "വായ്പ", "ਕਰਜ਼ਾ", "ଋଣ"]
+MONTH_W = ["months", "month", "mahine", "महीने", "महिने", "মাস", "மாத", "నెల", "મહિના", "ತಿಂಗಳ", "മാസ", "ਮਹੀਨ", "ମାସ"]
+KM_W = ["km", "किमी", "কিমি", "கிமீ", "కి.మీ", "કિમી", "ಕಿಮೀ", "കി.മീ", "ਕਿਮੀ", "କିମି"]
+GRIEV_W = ["complaint", "grievance", "deactivat", "blocked", "shikayat", "शिकायत", "तक्रार", "অভিযোগ", "புகார்", "ఫిర్యాదు", "ફરિયાદ", "ದೂರು", "പരാതി", "ਸ਼ਿਕਾਇਤ", "ଅଭିଯୋଗ", "id band"]
+DIARY_W = ["owes", "baki", "bakaya", "बकाया", "due", "बाकी"]
+SAFE_W = ["safe to spend", "daily limit", "kitna kharch", "कितना खर्च"]
 
 
 def _has(text: str, words: List[str]) -> bool:
@@ -20,7 +26,6 @@ def _has(text: str, words: List[str]) -> bool:
 
 
 def _after(text: str, words: List[str]) -> Optional[float]:
-    """First number that follows any of the given words."""
     for w in words:
         m = re.search(re.escape(w) + r"\D{0,12}(\d+(?:\.\d+)?)", text)
         if m:
@@ -29,7 +34,6 @@ def _after(text: str, words: List[str]) -> Optional[float]:
 
 
 def _before(text: str, words: List[str]) -> Optional[float]:
-    """Number written right before a unit word, e.g. '8 km'."""
     for w in words:
         m = re.search(r"(\d+(?:\.\d+)?)\s*" + re.escape(w), text)
         if m:
@@ -38,134 +42,105 @@ def _before(text: str, words: List[str]) -> Optional[float]:
 
 
 def detect_intent(low: str) -> str:
-    if _has(low, ["sos", "emergency", "khatre", "खतरे"]):
+    if _has(low, SOS_W):
         return "sos"
-    if _has(low, ["worth", "should i accept", "trip", "ride", "order lena", "सवारी"]) and _before(low, ["km", "किमी"]) is not None:
+    if _has(low, ["worth", "should i accept", "trip", "ride", "order lena", "सवारी"]) and _before(low, KM_W) is not None:
         return "trip"
-    if _has(low, ["loan", "emi", "interest", "byaj", "ब्याज", "लोन"]) and _has(low, ["months", "month", "mahine", "महीने"]):
+    if _has(low, LOAN_W) and _has(low, MONTH_W):
         return "loan"
-    if _has(low, ["complaint", "grievance", "deactivat", "blocked", "shikayat", "शिकायत", "id band", "ID बंद"]):
+    if _has(low, GRIEV_W):
         return "grievance"
-    if _has(low, ["spent", "kharcha", "kharch", "kharid", "खर्च", "expense"]):
+    if _has(low, EXPENSE_W):
         return "expense"
-    if _has(low, ["earned", "kamaya", "kamai", "kamaye", "कमाया", "कमाई", "income today"]) and NUM.search(low):
+    if _has(low, INCOME_W) and NUM.search(low):
         return "income"
-    if _has(low, ["summary", "hisab", "hisaab", "today", "aaj ka", "हिसाब", "आज"]) and _has(low, ["summary", "hisab", "hisaab", "हिसाब", "kitna", "कितना"]):
+    if _has(low, SUMMARY_W) and not NUM.search(low):
         return "summary"
-    if _has(low, ["safe to spend", "daily limit", "kitna kharch", "कितना खर्च"]):
+    if _has(low, SAFE_W):
         return "safe_to_spend"
-    if _has(low, ["owes", "baki", "bakaya", "बकाया", "due"]) and NUM.search(low):
+    if _has(low, DIARY_W) and NUM.search(low):
         return "diary"
     return "knowledge"
 
 
-def _fmt(hi: bool, en: str, hin: str) -> str:
-    return hin if hi else en
-
-
-def handle(user: str, raw_text: str) -> Dict:
-    """Returns {reply, intent, sources, escalate}."""
+def handle(user: str, raw_text: str, lang: str = "auto") -> Dict:
+    """Returns {reply, intent, lang, sources, escalate}."""
     secret = guardrails.shared_secret(raw_text)
     text = guardrails.mask_pii(raw_text)
     low = text.lower()
-    hi = detect_lang(text) == "hi"
-    prefix = (guardrails.SECRET_WARNING + "\n\n") if secret else ""
+    L = i18n.detect(text, lang)
+    t = lambda k, **kw: i18n.t(L, k, **kw)  # noqa: E731
+    prefix = (t("secret") + "\n\n") if secret else ""
 
-    crisis = guardrails.crisis_reply(low)
-    if crisis:
-        return {"reply": prefix + crisis["reply"], "intent": "crisis", "sources": [], "escalate": True}
+    def out(reply, intent, sources=None, escalate=False):
+        return {"reply": prefix + reply, "intent": intent, "lang": L, "sources": sources or [], "escalate": escalate}
+
+    if guardrails.is_crisis(low):
+        return out(t("crisis"), "crisis", escalate=True)
 
     intent = detect_intent(low)
-    facts, sources, template = "", [], ""
-
     if intent == "sos":
-        template = _fmt(hi, f"SOS: call 112 now. Share your live location with a trusted person. {guardrails.HELPLINES}",
-                        f"SOS: abhi 112 par call karein. Apni live location kisi apne ko bhejein. {guardrails.HELPLINES}")
-        return {"reply": prefix + template, "intent": intent, "sources": [], "escalate": True}
+        return out(t("sos"), intent, escalate=True)
+
+    facts, sources, template = "", [], ""
 
     if intent == "trip":
         fare = _after(low, ["fare", "pay", "kamai", "rs", "₹"]) or 0.0
-        km = _before(low, ["km", "किमी"]) or 0.0
+        km = _before(low, KM_W) or 0.0
         mins = _before(low, ["min", "minute", "मिनट"]) or km * 3
-        t = earnings.trip_worth(fare=fare, distance_km=km, time_min=mins, return_km=km * 0.5)
-        verdict = {"accept": "ACCEPT", "marginal": "MARGINAL", "skip": "SKIP"}[t["verdict"]]
-        template = _fmt(
-            hi,
-            f"Trip: fare Rs {fare:.0f}, {km:.0f} km. After fuel and wear you keep about Rs {t['net_profit']:.0f} "
-            f"(Rs {t['net_per_hour']:.0f}/hour). Verdict: {verdict}. (Assumes 40 km/l bike, petrol Rs 100, 50% empty return.)",
-            f"Trip: kiraya Rs {fare:.0f}, {km:.0f} km. Petrol aur ghisai ke baad bachega lagbhag Rs {t['net_profit']:.0f} "
-            f"(Rs {t['net_per_hour']:.0f}/ghanta). Salah: {verdict}.",
-        )
-        facts = f"Trip calc: {t}"
+        r = earnings.trip_worth(fare=fare, distance_km=km, time_min=mins, return_km=km * 0.5)
+        template = t("trip", fare=i18n.fmt(fare), km=i18n.fmt(km), net=i18n.fmt(r["net_profit"]),
+                     hourly=i18n.fmt(r["net_per_hour"]), verdict=t("v_" + r["verdict"]))
+        facts = f"Trip calc: {r}"
 
     elif intent == "loan":
-        months = _before(low, ["months", "month", "mahine", "महीने"]) or 12
+        months = _before(low, MONTH_W) or 12
         emi = _after(low, ["emi"]) or 0.0
         principal = _after(low, ["loan", "लोन", "borrow", "of rs", "rs"]) or 0.0
         try:
             r = money.loan_check(principal, emi, int(months))
-            template = _fmt(
-                hi,
-                f"You receive Rs {r['money_received']:.0f} and repay Rs {r['total_repayment']:.0f}. Real yearly interest is about "
-                f"{r['yearly_interest_pct']}%. Risk: {r['risk'].upper()}. Safer options: bank/SHG loan, PM MUDRA.",
-                f"Aapko Rs {r['money_received']:.0f} milenge aur Rs {r['total_repayment']:.0f} chukane honge. Asli saalana byaj lagbhag "
-                f"{r['yearly_interest_pct']}%. Khatra: {r['risk'].upper()}. Behtar: bank/SHG loan, PM MUDRA.",
-            )
+            template = t("loan", recv=i18n.fmt(r["money_received"]), total=i18n.fmt(r["total_repayment"]),
+                         pct=r["yearly_interest_pct"], risk=t("r_" + r["risk"]))
             facts = f"Loan check: {r}"
         except ValueError:
-            template = _fmt(hi, "Tell me the loan amount, monthly EMI and number of months, e.g. 'loan 10000 emi 1200 for 12 months'.",
-                            "Loan rashi, mahine ki EMI aur mahine bataiye, jaise 'loan 10000 emi 1200 12 months'.")
+            template = t("ask_loan")
 
     elif intent == "grievance":
-        template = _fmt(
-            hi,
-            "I can draft a polite complaint. Use the Grievance Ladder: 1) platform support, 2) grievance officer, 3) labour department, "
-            "4) consumer forum, 5) free legal aid (NALSA 15100). Send me your name, company, date and amount and I will write the letter.",
-            "Main shikayat ka patra bana sakta hoon. Pehle platform support, phir grievance officer, phir labour department, phir consumer forum, "
-            "phir muft kanooni madad (NALSA 15100). Apna naam, company, tareekh aur rashi bhejein.",
-        )
+        template = t("grievance_help")
 
     elif intent == "expense":
-        amt = _after(low, ["spent", "kharcha", "kharch", "खर्च", "rs", "₹"]) or (float(NUM.search(low).group()) if NUM.search(low) else 0.0)
+        amt = _after(low, EXPENSE_W + ["rs", "₹"]) or (float(NUM.search(low).group()) if NUM.search(low) else 0.0)
         cat = money.categorise(low)
         store.add(user, "expense", amt, cat, text[:100])
-        template = _fmt(hi, f"Noted: Rs {amt:.0f} spent on {cat}.", f"Likh liya: Rs {amt:.0f} {cat} par kharch.")
+        template = t("noted_expense", amt=i18n.fmt(amt), cat=t("cat_" + cat))
 
     elif intent == "income":
         amt = float(NUM.search(low).group()) if NUM.search(low) else 0.0
         store.add(user, "income", amt, "work", text[:100])
-        template = _fmt(hi, f"Noted: Rs {amt:.0f} earned today.", f"Likh liya: aaj Rs {amt:.0f} kamaye.")
+        template = t("noted_income", amt=i18n.fmt(amt))
 
     elif intent == "diary":
         amt = float(NUM.search(low).group()) if NUM.search(low) else 0.0
         store.add(user, "diary", amt, "unpaid_due", text[:200])
-        template = _fmt(hi, f"Saved in your wage diary: Rs {amt:.0f} due. This dated note can help as evidence.",
-                        f"Mazdoori diary mein likh liya: Rs {amt:.0f} baaki. Ye tareekh ke saath saboot ban sakta hai.")
+        template = t("diary_saved", amt=i18n.fmt(amt))
 
     elif intent == "summary":
         s = store.daily_summary(user)
-        template = _fmt(hi, f"Today: earned Rs {s['earned']:.0f}, spent Rs {s['spent']:.0f}, saved Rs {s['saved']:.0f}.",
-                        f"Aaj: kamaya Rs {s['earned']:.0f}, kharch Rs {s['spent']:.0f}, bacha Rs {s['saved']:.0f}.")
+        template = t("summary", earned=i18n.fmt(s["earned"]), spent=i18n.fmt(s["spent"]), saved=i18n.fmt(s["saved"]))
 
     elif intent == "safe_to_spend":
-        template = _fmt(hi, "Tell me your monthly income, rent, EMI and bills and I will give a daily safe-to-spend number.",
-                        "Mahine ki kamai, kiraya, EMI aur bills bataiye, main roz ka safe-to-spend number dunga.")
+        template = t("ask_safe")
 
     else:  # knowledge: RAG
         hits = rag.get_retriever().search(text, k=2)
         if not hits:
-            template = _fmt(
-                hi,
-                "I am not sure about this and do not want to guess. Please ask at your nearest CSC, call 14434 (e-Shram) or "
-                "NALSA 15100 for legal questions.",
-                "Mujhe iske baare mein pakka nahi pata, andaza nahi lagaunga. Kripya apne nazdiki CSC par poochhein, e-Shram 14434 ya "
-                "kanooni madad ke liye NALSA 15100 par call karein.",
-            )
+            template = t("unsure")
         else:
             sources = [{"title": h["title"], "url": h["source"]} for h in hits]
             facts = "\n".join(f"- {h['title']}: {h['summary']} Documents: {', '.join(h['documents']) or 'n/a'}. Apply: {h['how_to_apply']} (Source: {h['source']})" for h in hits)
             top = hits[0]
-            template = f"{top['title']}: {top['summary']}\nHow to apply: {top['how_to_apply']}\nSource: {top['source']} (please confirm details on the official portal)"
+            template = (f"{t('knowledge_hdr')}\n{top['title']}: {top['summary']}\n"
+                        f"→ {top['how_to_apply']}\n{top['source']}")
 
-    reply = llm.compose(text, facts) if facts else None
-    return {"reply": prefix + (reply or template), "intent": intent, "sources": sources, "escalate": False}
+    reply = llm.compose(text, facts, reply_language=i18n.languages().get(L, "English")) if facts else None
+    return out(reply or template, intent, sources)

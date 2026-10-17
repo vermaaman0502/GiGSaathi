@@ -94,7 +94,7 @@ def test_chat_trip_and_loan():
 
 
 def test_api_endpoints():
-    assert client.get("/health").json() == {"status": "ok"}
+    assert client.get("/health").json()["status"] == "ok"
     assert client.get("/").status_code == 200
     x = client.post("/api/earnings/xray", json={"gross": 1000, "hours_worked": 8, "commission": 200, "deductions": [{"label": "xyz", "amount": 50}]}).json()
     assert x["flags"]

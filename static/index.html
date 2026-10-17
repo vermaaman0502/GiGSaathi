@@ -1,30 +1,197 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b7a53">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%230b7a53%27/%3E%3Ctext x=%2716%27 y=%2723%27 font-size=%2720%27 text-anchor=%27middle%27 fill=%27white%27%3EG%3C/text%3E%3C/svg%3E">
 <title>GigSaathi</title>
 <style>
-body{font-family:system-ui,sans-serif;max-width:640px;margin:0 auto;padding:16px;background:#f6f7f9;color:#1b1f23}
-h1{font-size:1.4rem;margin:0 0 4px}p.sub{margin:0 0 12px;color:#555}
-#log{background:#fff;border:1px solid #ddd;border-radius:10px;padding:10px;height:55vh;overflow:auto}
-.m{margin:6px 0;padding:8px 10px;border-radius:10px;white-space:pre-wrap;max-width:85%}
+:root{--g:#0b7a53;--gd:#065c3e;--bg:#f4f6f8;--card:#fff;--tx:#1b1f23;--mu:#5b6670;--bd:#dfe4e8;--warn:#b45309;--bad:#b42318}
+*{box-sizing:border-box;min-width:0}
+html{overflow-x:hidden}
+body{margin:0;font-family:system-ui,-apple-system,"Noto Sans","Noto Sans Devanagari","Noto Sans Bengali","Noto Sans Tamil","Noto Sans Telugu","Noto Sans Gujarati","Noto Sans Kannada","Noto Sans Malayalam","Noto Sans Gurmukhi","Noto Sans Oriya",sans-serif;background:var(--bg);color:var(--tx);font-size:16px;line-height:1.45}
+header{background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;padding:14px 16px}
+.wrap{max-width:760px;margin:0 auto}
+.top{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+h1{margin:0;font-size:1.35rem}header p{margin:2px 0 0;opacity:.9;font-size:.9rem}
+.lang{display:flex;align-items:center;gap:6px;font-size:.85rem}
+select,input,textarea,button{font:inherit}
+select,input,textarea{width:100%;padding:10px;border:1px solid var(--bd);border-radius:8px;background:#fff;color:var(--tx)}
+.lang select{width:auto;max-width:44vw}
+nav{display:flex;gap:4px;overflow-x:auto;background:#fff;border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:5}
+nav button{flex:1 0 auto;padding:12px 14px;border:0;background:none;border-bottom:3px solid transparent;color:var(--mu);white-space:nowrap;cursor:pointer}
+nav button[aria-selected=true]{color:var(--g);border-color:var(--g);font-weight:600}
+main{padding:14px 16px 80px}
+.panel{display:none}.panel.on{display:block}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:14px}
+.card h2{margin:0 0 10px;font-size:1.05rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+label{display:block;font-size:.8rem;color:var(--mu);margin-bottom:3px}
+label.chk{display:flex;gap:8px;align-items:center;font-size:.95rem;color:var(--tx);margin-top:6px}label.chk input{width:auto}
+.btn{margin-top:12px;padding:11px 16px;border:0;border-radius:8px;background:var(--g);color:#fff;cursor:pointer;font-weight:600}
+.btn.sos{background:var(--bad);font-size:1.1rem;width:100%;padding:16px}
+.btn.alt{background:#fff;color:var(--g);border:1px solid var(--g)}
+.res{margin-top:12px;padding:10px 12px;background:#eef7f2;border-left:4px solid var(--g);border-radius:6px;white-space:pre-wrap}
+.res:empty{display:none}.res .fl{color:var(--warn);margin-top:6px}.res ul{margin:6px 0 0;padding-left:18px}
+.res .sp{float:right;border:0;background:none;font-size:1.1rem;cursor:pointer}
+.pre{white-space:pre-wrap;background:#fafafa;border:1px dashed var(--bd);padding:10px;border-radius:8px;margin-top:10px;font-size:.92rem}
+#log{height:46vh;overflow:auto;padding:10px;background:#fff;border:1px solid var(--bd);border-radius:12px}
+.m{margin:6px 0;padding:8px 11px;border-radius:12px;white-space:pre-wrap;max-width:88%;width:fit-content}
 .u{background:#dcf8c6;margin-left:auto}.b{background:#eef0f3}
-form{display:flex;gap:6px;margin-top:10px}input{flex:1;padding:12px;border:1px solid #ccc;border-radius:8px;font-size:1rem}
-button{padding:12px 14px;border:0;border-radius:8px;background:#0b7a53;color:#fff;font-size:1rem}
-.chips button{background:#fff;color:#0b7a53;border:1px solid #0b7a53;margin:2px;padding:6px 10px;font-size:.85rem}
+.chat-in{display:flex;gap:6px;margin-top:10px}.chat-in input{flex:1;min-width:0}.chat-in .btn{margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.chips button{background:#fff;color:var(--g);border:1px solid var(--g);border-radius:16px;padding:5px 11px;font-size:.82rem;cursor:pointer}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.75rem;background:#e3e8ec;margin-right:4px}
+.scheme{border-top:1px solid var(--bd);padding:8px 0}.scheme b{display:block}.scheme a{color:var(--g);word-break:break-all;font-size:.85rem}
+footer{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--bd);padding:8px 16px;font-size:.78rem;color:var(--mu);text-align:center}
 </style></head><body>
-<h1>GigSaathi</h1><p class="sub">Your saathi for money, safety and rights. Type or tap the mic (Hindi/English).</p>
-<div class="chips" id="chips"></div>
-<div id="log" aria-live="polite"></div>
-<form id="f"><input id="t" placeholder="e.g. trip 120 rupees 8 km" autocomplete="off"><button type="button" id="mic" aria-label="Speak">🎤</button><button>Send</button></form>
+<header><div class="wrap top">
+  <div><h1>GigSaathi</h1><p id="sub"></p></div>
+  <div class="lang"><label for="lang" id="langlbl" style="margin:0;color:#fff"></label><select id="lang" aria-label="Language"></select></div>
+</div></header>
+<nav id="nav" role="tablist"></nav>
+<main class="wrap" id="main"></main>
+<footer id="disc"></footer>
+
 <script>
-const log=document.getElementById('log'),t=document.getElementById('t');
-const uid=(localStorage.uid=localStorage.uid||Math.random().toString(36).slice(2));
-function add(txt,c){const d=document.createElement('div');d.className='m '+c;d.textContent=txt;log.appendChild(d);log.scrollTop=log.scrollHeight}
-async function send(txt){if(!txt.trim())return;add(txt,'u');t.value='';
- try{const r=await fetch('/chat',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({user:uid,text:txt})});
- const j=await r.json();add(j.reply,'b');if('speechSynthesis' in window){const u=new SpeechSynthesisUtterance(j.reply);u.lang=/[ऀ-ॿ]/.test(j.reply)?'hi-IN':'en-IN';speechSynthesis.speak(u)}}
- catch(e){add('Network problem. Please try again.','b')}}
-document.getElementById('f').onsubmit=e=>{e.preventDefault();send(t.value)};
-const SR=window.SpeechRecognition||window.webkitSpeechRecognition;const mic=document.getElementById('mic');
-if(SR){mic.onclick=()=>{const r=new SR();r.lang='hi-IN';r.onresult=e=>send(e.results[0][0].transcript);r.start()}}else mic.style.display='none';
-['Which schemes can I get?','trip 120 rupees 8 km','loan 10000 emi 1200 for 12 months','aaj 850 kamaye','chai 20 kharcha','aaj ka hisab kitna'].forEach(s=>{const b=document.createElement('button');b.textContent=s;b.onclick=()=>send(s);document.getElementById('chips').appendChild(b)});
+"use strict";
+let S = {};            // UI strings for current language
+let LANGS = [];        // [{code,name,speech}]
+let lang = "en";
+const uid = (function(){try{return localStorage.uid||(localStorage.uid=Math.random().toString(36).slice(2))}catch(e){return Math.random().toString(36).slice(2)}})();
+const $ = (s, r=document) => r.querySelector(s);
+const el = (tag, attrs={}, ...kids) => { const e=document.createElement(tag); for(const [k,v] of Object.entries(attrs)){ if(k==='class')e.className=v; else if(k.startsWith('on'))e[k]=v; else if(v!==false&&v!=null)e.setAttribute(k,v);} kids.flat().forEach(c=>e.append(c&&c.nodeType?c:document.createTextNode(c??''))); return e; };
+const speechTag = () => (LANGS.find(l=>l.code===lang)||{}).speech || 'en-IN';
+const store = {get(k){try{return localStorage.getItem(k)}catch(e){return null}}, set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+
+async function api(path, body) {
+  const opt = body ? {method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify(body)} : {};
+  const r = await fetch(path, opt);
+  const j = await r.json().catch(()=>({}));
+  if (!r.ok) throw new Error(typeof j.detail==='string' ? j.detail : 'Error');
+  return j;
+}
+function speak(text) {
+  if (!('speechSynthesis' in window) || !text) return;
+  speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = speechTag(); speechSynthesis.speak(u);
+}
+function showRes(box, data) {
+  box.replaceChildren();
+  if (data.message) { box.append(el('button',{class:'sp','aria-label':'Listen',onclick:()=>speak(data.message)},'🔊'), el('div',{}, data.message)); }
+  (data.flags||[]).forEach(f => box.append(el('div',{class:'fl'},'⚠ '+f)));
+  if (data.tips) box.append(el('ul',{}, data.tips.map(t=>el('li',{},t))));
+  if (data.risks) box.append(el('ul',{}, data.risks.map(r=>el('li',{}, r.point+' — "'+r.snippet+'"'))));
+}
+
+/* ---- generic form card ---- */
+function field(f) {
+  const id = 'f_'+f.n+Math.random().toString(36).slice(2,6);
+  let input;
+  if (f.t==='select') input = el('select',{id,name:f.n}, f.opts.map(([v,k])=>el('option',{value:v}, S[k]||k)));
+  else if (f.t==='checkbox') { input = el('input',{id,name:f.n,type:'checkbox'}); return {wrap: el('label',{class:'chk'},input,S[f.l]||f.l), input}; }
+  else if (f.t==='textarea') input = el('textarea',{id,name:f.n,rows:5});
+  else if (f.t==='date') input = el('input',{id,name:f.n,type:'date'});
+  else if (f.t==='text') input = el('input',{id,name:f.n,type:'text',autocomplete:'off'});
+  else input = el('input',{id,name:f.n,type:'number',inputmode:'decimal',min:'0',step:'any'});
+  if (f.d!==undefined && input.type!=='checkbox') input.value = f.d;
+  return {wrap: el('div',{}, el('label',{for:id}, S[f.l]||f.l), input), input};
+}
+function formCard(titleKey, fields, btnKey, onSubmit, extra) {
+  const res = el('div',{class:'res',role:'status','aria-live':'polite'});
+  const inputs = {}; const grid = el('div',{class:'grid'});
+  fields.forEach(f => { const x=field(f); inputs[f.n]=x.input; grid.append(x.wrap); });
+  const vals = () => Object.fromEntries(fields.map(f => { const i=inputs[f.n]; return [f.n, f.t==='checkbox'? i.checked : (f.t==='select'||f.t==='text'||f.t==='textarea'||f.t==='date') ? i.value : (i.value===''?0:parseFloat(i.value))]; }));
+  const btn = el('button',{class:'btn',type:'button',onclick: async()=>{ btn.disabled=true; try{ await onSubmit(vals(), res, inputs); }catch(e){ res.replaceChildren(el('div',{class:'fl'},'⚠ '+e.message)); } btn.disabled=false; }}, S[btnKey]||btnKey);
+  return el('section',{class:'card'}, el('h2',{},S[titleKey]||titleKey), grid, btn, res, extra||'');
+}
+const post = (path, extraBody) => async (v, res) => showRes(res, await api(path, {...v, ...(extraBody||{}), lang}));
+
+/* ---- panels ---- */
+const CHIPS = ['Which schemes can I get?','trip fare 120 distance 8 km','loan 10000 emi 1200 for 12 months','aaj 850 kamaye','chai 20 kharcha','aaj ka hisab','mera accident ho gaya'];
+function chatPanel() {
+  const log = el('div',{id:'log','aria-live':'polite'});
+  const inp = el('input',{type:'text',id:'t',placeholder:S.ui_ph,autocomplete:'off'});
+  const add = (txt,c) => { const d=el('div',{class:'m '+c}, txt); if(c==='b') d.append(' ', el('button',{class:'sp','aria-label':'Listen',style:'border:0;background:none;cursor:pointer',onclick:()=>speak(txt)},'🔊')); log.append(d); log.scrollTop=log.scrollHeight; };
+  async function send(txt) {
+    if (!txt.trim()) return; add(txt,'u'); inp.value='';
+    try { const j = await api('/chat',{user:uid,text:txt,lang}); add(j.reply,'b'); speak(j.reply); }
+    catch(e){ add('⚠ '+e.message,'b'); }
+  }
+  const mic = el('button',{class:'btn alt',type:'button','aria-label':S.ui_speak||'Speak',onclick:()=>{ const SR=window.SpeechRecognition||window.webkitSpeechRecognition; if(!SR){alert('Voice input is not supported in this browser');return;} const r=new SR(); r.lang=speechTag(); r.onresult=e=>send(e.results[0][0].transcript); r.start(); }},'🎤');
+  if (!(window.SpeechRecognition||window.webkitSpeechRecognition)) mic.style.display='none';
+  const form = el('form',{class:'chat-in',onsubmit:e=>{e.preventDefault();send(inp.value)}}, inp, mic, el('button',{class:'btn'}, S.ui_send));
+  const chips = el('div',{class:'chips'}, CHIPS.map(c=>el('button',{type:'button',onclick:()=>send(c)},c)));
+  return el('div',{}, chips, log, form);
+}
+function earnPanel() {
+  const side = formCard('h_side',[{n:'work_type',l:'l_work',t:'select',opts:[['delivery','wk_delivery'],['driver','wk_driver'],['domestic','wk_domestic'],['daily_wage','wk_daily']]}],'b_find',async(v,res)=>{
+    const j = await api('/api/side-income?work_type='+v.work_type); res.replaceChildren(el('div',{},j.note), ...j.ideas.map(i=>el('div',{class:'scheme'},el('b',{},i.idea), el('span',{class:'tag'},'₹'+i.cost), el('span',{class:'tag'},'+₹'+i.extra_per_month+'/mo'), el('div',{},i.support))));
+  });
+  return el('div',{},
+    formCard('h_xray',[{n:'gross',l:'l_gross',d:1000},{n:'hours_worked',l:'l_hours',d:8},{n:'waiting_hours',l:'l_wait',d:1.5},{n:'commission',l:'l_comm',d:200},{n:'fuel',l:'l_fuel',d:150},{n:'emi_per_day',l:'l_emi_day',d:50}],'ui_calc',post('/api/earnings/xray')),
+    formCard('h_trip',[{n:'fare',l:'l_fare',d:120},{n:'distance_km',l:'l_km',d:8},{n:'time_min',l:'l_min',d:25},{n:'return_km',l:'l_return_km',d:4}],'ui_calc',post('/api/trip-worth')),
+    formCard('h_shift',[{n:'work_type',l:'l_work',t:'select',opts:[['food','wt_food'],['ride','wt_ride'],['parcel','wt_parcel']]},{n:'weather',l:'l_weather',t:'select',opts:[['clear','w_clear'],['rain','w_rain'],['hot','w_hot']]},{n:'festival',l:'l_festival',t:'checkbox'}],'ui_calc',post('/api/shift-planner')),
+    formCard('h_incentive',[{n:'trips_done',l:'l_trips_done',d:12},{n:'trips_target',l:'l_trips_target',d:20},{n:'bonus',l:'l_bonus',d:300},{n:'hours_left',l:'l_hours_left',d:3}],'ui_calc',post('/api/incentive')),
+    side);
+}
+function moneyPanel() {
+  const sumCard = formCard('h_safe',[{n:'expected_monthly_income',l:'l_income_m',d:30000},{n:'rent',l:'l_rent',d:6000},{n:'emi',l:'l_emi',d:3000},{n:'bills',l:'l_bills',d:1000}],'ui_calc',post('/api/safe-to-spend'));
+  const today = el('section',{class:'card'}, el('h2',{},S.h_today), el('div',{class:'res',id:'todaybox'}), el('button',{class:'btn alt',type:'button',onclick:async()=>{ showRes($('#todaybox'), await api('/api/money/summary/'+uid+'?lang='+lang)); }}, S.ui_calc));
+  return el('div',{}, sumCard,
+    formCard('h_loan',[{n:'principal',l:'l_loan_amt',d:10000},{n:'emi',l:'l_emi',d:1200},{n:'months',l:'l_months',d:12},{n:'upfront_fee',l:'l_fee',d:0}],'ui_calc',post('/api/loan-check')), today);
+}
+function rightsPanel() {
+  const render = (res, j) => { res.replaceChildren(el('div',{},j.note||''), ...j.matches.map(m=>el('div',{class:'scheme'}, el('b',{},m.scheme.title), el('div',{},m.why), el('div',{},m.scheme.summary), el('div',{},'→ '+m.scheme.how_to_apply), el('a',{href:m.scheme.source,target:'_blank',rel:'noopener'},m.scheme.source)))); };
+  return el('div',{}, formCard('h_match',[{n:'age',l:'l_age',d:28},{n:'monthly_income',l:'l_income_m',d:14000}],'b_find',async(v,res)=>render(res, await api('/api/schemes/match',{...v,lang}))));
+}
+function docsPanel() {
+  const list = el('div',{class:'res'});
+  const refresh = async () => { const j = await api('/api/vault/'+uid+'?lang='+lang); list.replaceChildren(...j.items.map(i=>el('div',{class:i.days_left<0?'fl':''}, (i.days_left<0?'⛔ ':i.days_left<=30?'⚠ ':'✅ ')+i.message))); };
+  const vault = formCard('h_vault',[{n:'doc_type',l:'h_vault',t:'select',opts:[['dl','dt_dl'],['rc','dt_rc'],['insurance','dt_ins'],['puc','dt_puc']]},{n:'expiry',l:'l_expiry',t:'date'}],'b_add',async(v)=>{ if(!v.expiry) throw new Error('YYYY-MM-DD'); await api('/api/vault',{...v,user:uid,lang}); await refresh(); }, list);
+  refresh().catch(()=>{});
+  return el('div',{}, formCard('h_kagaz',[{n:'text',l:'l_doc_text',t:'textarea'}],'b_scan',post('/api/document/scan')), vault);
+}
+function helpPanel() {
+  const sosRes = el('div',{class:'res'});
+  const sos = el('section',{class:'card'}, el('h2',{},S.h_sos), el('button',{class:'btn sos',type:'button',onclick:async()=>{ const j=await api('/api/sos?lang='+lang); showRes(sosRes,j); speak(j.message); location.href='tel:112'; }}, '🆘 '+S.b_sos), sosRes);
+  const letter = el('div',{});
+  const grievance = formCard('h_grievance',[{n:'kind',l:'h_grievance',t:'select',opts:[['deactivation','k_deactivation'],['wage_due','k_wage_due'],['deduction','k_deduction'],['general','k_general']]},{n:'name',l:'l_name',t:'text'},{n:'company',l:'l_company',t:'text'},{n:'details',l:'l_details',t:'textarea'},{n:'amount',l:'l_amount',d:0}],'b_draft',async(v,res)=>{
+    if(!v.name||!v.company) throw new Error(S.l_name+' / '+S.l_company);
+    const j = await api('/api/grievance',{...v,evidence:[],lang}); res.replaceChildren(el('div',{},j.message), ...(j.letter_local?[el('div',{class:'pre'},j.letter_local)]:[]), el('div',{class:'pre'},j.letter), el('ol',{}, j.ladder.map(s=>el('li',{}, s.to+' — '+s.note)))); }, letter);
+  // practice mode
+  const pbox = el('div',{class:'res'}); let cur=null;
+  const pSel = el('select',{}); const pIn = el('input',{type:'text',placeholder:S.l_reply});
+  api('/api/practice/scenarios?lang='+lang).then(j=>j.scenarios.forEach(s=>pSel.append(el('option',{value:s.id},s.title))));
+  const pShow = (npc,extra) => { pbox.replaceChildren(el('div',{},'🗣 '+npc), extra||''); speak(npc); };
+  const pStart = el('button',{class:'btn',type:'button',onclick:async()=>{ const j=await api('/api/practice/start',{scenario:pSel.value,lang}); cur=j; pShow(j.npc); }}, S.b_start);
+  const pSend = el('button',{class:'btn alt',type:'button',onclick:async()=>{ if(!cur||cur.done||!pIn.value) return; const j=await api('/api/practice/step',{scenario:cur.scenario,step:cur.step,answer:pIn.value,lang}); pIn.value=''; cur=j; const fb=j.feedback; const ex=el('div',{class:'fl'},'💡 '+fb.tip+'  ('+fb.score+'/'+fb.max+')'); if(j.done) pbox.replaceChildren(ex); else pShow(j.npc,ex); }}, S.b_send_reply);
+  const practice = el('section',{class:'card'}, el('h2',{},S.h_practice), pSel, pStart, el('div',{style:'margin-top:8px'},pIn), pSend, pbox);
+  const fatigue = formCard('h_fatigue',[{n:'hours_worked',l:'l_hours_driven',d:9},{n:'hours_slept',l:'l_sleep',d:5},{n:'temp_c',l:'l_temp',d:38}],'ui_calc',post('/api/fatigue'));
+  const colRes = el('div',{});
+  const collective = formCard('h_collective',[{n:'company',l:'l_company',t:'text'},{n:'issue',l:'l_issue',t:'text'},{n:'city',l:'l_city',t:'text'}],'b_report',async(v,res)=>{
+    if(!v.company||!v.issue||!v.city) throw new Error('!'); const j=await api('/api/collective/report',{...v,lang});
+    res.replaceChildren(...j.groups.map(g=>el('div',{class:'scheme'}, el('b',{},g.company+' · '+g.issue+' · '+g.city+' ('+g.count+')'), el('div',{},g.petition||g.message)))); });
+  return el('div',{}, sos, fatigue, grievance, practice, collective);
+}
+
+const TABS = [['chat','t_chat',chatPanel],['earn','t_earn',earnPanel],['money','t_money',moneyPanel],['rights','t_rights',rightsPanel],['docs','t_docs',docsPanel],['help','t_help',helpPanel]];
+const QS = new URLSearchParams(location.search);
+let active = QS.get('tab') || store.get('tab') || 'chat';
+const chatLog = {html:null};
+function render() {
+  document.documentElement.lang = lang === 'hinglish' ? 'hi-Latn' : lang;
+  $('#sub').textContent = S.ui_sub; $('#langlbl').textContent = '🌐 '+S.ui_lang; $('#disc').textContent = S.ui_disc;
+  const nav = $('#nav'); nav.replaceChildren(...TABS.map(([id,k])=>el('button',{role:'tab','aria-selected':String(id===active),onclick:()=>{active=id;store.set('tab',id);render();}}, S[k])));
+  const main = $('#main'); main.replaceChildren(...TABS.map(([id,,build])=>{ const p=el('div',{class:'panel'+(id===active?' on':''),role:'tabpanel'}); if(id===active) p.append(build()); return p; }));
+}
+async function setLang(code) {
+  lang = code; store.set('lang', code);
+  S = await api('/api/i18n/'+code); render();
+}
+(async function init(){
+  LANGS = (await api('/api/languages')).languages;
+  const sel = $('#lang'); LANGS.forEach(l=>sel.append(el('option',{value:l.code},l.name)));
+  let pick = QS.get('lang') || store.get('lang'); if(!LANGS.find(l=>l.code===pick)) pick = null; if(!pick){ const n=(navigator.language||'en').slice(0,2).toLowerCase(); pick = LANGS.find(l=>l.code===n) ? n : 'en'; }
+  sel.value = pick; sel.onchange = () => setLang(sel.value);
+  await setLang(pick);
+})();
 </script></body></html>
