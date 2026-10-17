@@ -29,6 +29,36 @@ def _db() -> sqlite3.Connection:
               user TEXT NOT NULL, doc_type TEXT NOT NULL, expiry TEXT NOT NULL,
               PRIMARY KEY (user, doc_type)
             );
+            CREATE TABLE IF NOT EXISTS shifts (
+              id INTEGER PRIMARY KEY AUTOINCREMENT, user TEXT NOT NULL, day TEXT NOT NULL, platform TEXT NOT NULL DEFAULT 'other',
+              hours REAL NOT NULL DEFAULT 0, start_hour INTEGER, gross REAL NOT NULL DEFAULT 0, commission REAL NOT NULL DEFAULT 0,
+              deductions REAL NOT NULL DEFAULT 0, incentive REAL NOT NULL DEFAULT 0, fuel REAL NOT NULL DEFAULT 0, other_expenses REAL NOT NULL DEFAULT 0,
+              promised REAL, received REAL, source TEXT NOT NULL DEFAULT 'manual', is_demo INTEGER NOT NULL DEFAULT 0, note TEXT DEFAULT ''
+            );
+            CREATE INDEX IF NOT EXISTS ix_shifts_user ON shifts(user, day);
+            CREATE TABLE IF NOT EXISTS wage_diary (
+              id INTEGER PRIMARY KEY AUTOINCREMENT, user TEXT NOT NULL, day TEXT NOT NULL, employer TEXT NOT NULL DEFAULT '',
+              work TEXT NOT NULL DEFAULT '', hours REAL NOT NULL DEFAULT 0, promised REAL NOT NULL DEFAULT 0, received REAL NOT NULL DEFAULT 0,
+              is_demo INTEGER NOT NULL DEFAULT 0
+            );
+            CREATE TABLE IF NOT EXISTS impact (
+              id INTEGER PRIMARY KEY AUTOINCREMENT, user TEXT NOT NULL, day TEXT NOT NULL, kind TEXT NOT NULL, amount REAL NOT NULL DEFAULT 0,
+              basis TEXT NOT NULL, note TEXT NOT NULL DEFAULT '', is_demo INTEGER NOT NULL DEFAULT 0
+            );
+            CREATE TABLE IF NOT EXISTS tracker (
+              user TEXT NOT NULL, scheme_id TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'saved', reminder TEXT, checklist TEXT NOT NULL DEFAULT '{}',
+              updated TEXT NOT NULL, is_demo INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (user, scheme_id)
+            );
+            CREATE TABLE IF NOT EXISTS grievances (
+              id INTEGER PRIMARY KEY AUTOINCREMENT, user TEXT NOT NULL, kind TEXT NOT NULL, company TEXT NOT NULL, facts TEXT NOT NULL DEFAULT '{}',
+              letter TEXT NOT NULL DEFAULT '', letter_local TEXT NOT NULL DEFAULT '', status TEXT NOT NULL DEFAULT 'draft',
+              timeline TEXT NOT NULL DEFAULT '[]', evidence TEXT NOT NULL DEFAULT '[]', created TEXT NOT NULL, updated TEXT NOT NULL,
+              submitted_on TEXT, is_demo INTEGER NOT NULL DEFAULT 0
+            );
+            CREATE TABLE IF NOT EXISTS evidence (
+              id INTEGER PRIMARY KEY AUTOINCREMENT, user TEXT NOT NULL, day TEXT NOT NULL, kind TEXT NOT NULL, title TEXT NOT NULL,
+              data TEXT NOT NULL DEFAULT '{}', is_demo INTEGER NOT NULL DEFAULT 0
+            );
             -- Collective Voice: deliberately has NO user column (anonymous by design).
             CREATE TABLE IF NOT EXISTS reports (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -100,3 +130,36 @@ def report_groups() -> List[Dict]:
 def monthly_totals(user: str) -> List[Dict]:
     """Per-category expense totals for the Leak Finder."""
     return entries(user, "expense")
+
+
+# ---- generic helpers used by the service modules ----
+def q(sql: str, args=()) -> List[Dict]:
+    with _lock:
+        return [dict(r) for r in _db().execute(sql, args)]
+
+
+def x(sql: str, args=()) -> int:
+    """Execute a write; returns lastrowid."""
+    with _lock:
+        c = _db()
+        cur = c.execute(sql, args)
+        c.commit()
+        return cur.lastrowid
+
+
+USER_TABLES = ["entries", "shifts", "wage_diary", "impact", "tracker", "grievances", "evidence", "vault"]
+
+
+def delete_user(user: str) -> Dict[str, int]:
+    """Right to erasure: remove every row belonging to the user."""
+    out = {}
+    with _lock:
+        c = _db()
+        for t in USER_TABLES:
+            out[t] = c.execute(f"DELETE FROM {t} WHERE user=?", (user,)).rowcount
+        c.commit()
+    return out
+
+
+def export_user(user: str) -> Dict[str, List[Dict]]:
+    return {t: q(f"SELECT * FROM {t} WHERE user=?", (user,)) for t in USER_TABLES}

@@ -45,30 +45,47 @@ def fmt(n: float) -> str:
     return f"{n:,.0f}" if abs(n - round(n)) < 0.005 else f"{n:,.2f}"
 
 
-_SCRIPTS = [  # unicode block -> language (Devanagari defaults to Hindi; Marathi if user picked it)
-    (re.compile(r"[ঀ-৿]"), "bn"),
-    (re.compile(r"[਀-੿]"), "pa"),
-    (re.compile(r"[઀-૿]"), "gu"),
-    (re.compile(r"[଀-୿]"), "or"),
-    (re.compile(r"[஀-௿]"), "ta"),
-    (re.compile(r"[ఀ-౿]"), "te"),
-    (re.compile(r"[ಀ-೿]"), "kn"),
-    (re.compile(r"[ഀ-ൿ]"), "ml"),
-    (re.compile(r"[ऀ-ॿ]"), "hi"),
+_SCRIPTS = [  # unicode block -> language (Devanagari defaults to Hindi unless Marathi markers appear)
+    (re.compile(r"[\u0980-\u09FF]"), "bn"),
+    (re.compile(r"[\u0A00-\u0A7F]"), "pa"),
+    (re.compile(r"[\u0A80-\u0AFF]"), "gu"),
+    (re.compile(r"[\u0B00-\u0B7F]"), "or"),
+    (re.compile(r"[\u0B80-\u0BFF]"), "ta"),
+    (re.compile(r"[\u0C00-\u0C7F]"), "te"),
+    (re.compile(r"[\u0C80-\u0CFF]"), "kn"),
+    (re.compile(r"[\u0D00-\u0D7F]"), "ml"),
+    (re.compile(r"[\u0600-\u06FF]"), "ur"),   # Arabic script: Urdu (no template locale yet - uses the LLM if configured)
+    (re.compile(r"[\u0900-\u097F]"), "hi"),
 ]
+_MARATHI = ("आहे", "आहेत", "मला", "तुम्ही", "काय", "आणि", "कसे", "पाहिजे", "माझ", "करा", "नाही का", "होते")
 _HINGLISH = {"kamaya", "kamaye", "kamai", "kharcha", "kharch", "hisab", "hisaab", "mahine", "aaj", "kitna", "baki", "nahi",
-             "mujhe", "batao", "bataiye", "chahiye", "paisa", "madad", "yojana", "gaadi", "kiraya", "ghanta", "mera", "meri"}
+             "mujhe", "batao", "bataiye", "chahiye", "paisa", "madad", "yojana", "gaadi", "kiraya", "ghanta", "mera", "meri",
+             "hai", "kya", "kaise", "karo", "kar", "hum", "aap", "bhai", "sahi", "ke", "ka", "ki", "ko"}
+# Names for the LLM when a language has no template locale.
+EXTRA_NAMES = {"ur": "Urdu", "as": "Assamese", "ne": "Nepali"}
 
 
-def detect(text: str, chosen: str = "auto") -> str:
-    """Reply language: explicit choice wins; 'auto' guesses from script/words."""
+def language_name(code: str) -> str:
+    return languages().get(code) or EXTRA_NAMES.get(code) or "English"
+
+
+def detect(text: str, chosen: str = "auto", prefer: str = "") -> str:
+    """Language the worker WROTE in. 'auto' (default): decided from the message itself - the reply
+    must come back in that same language. An explicit `chosen` code overrides. `prefer` (the UI
+    language) is used only when the message has no letters at all (e.g. just numbers)."""
     if chosen and chosen != "auto":
         return normalize(chosen)
     for rx, code in _SCRIPTS:
         if rx.search(text):
+            if code == "hi" and any(m in text for m in _MARATHI):
+                return "mr"
             return code
-    words = set(re.findall(r"[a-z]+", text.lower()))
-    return "hinglish" if words & _HINGLISH else DEFAULT
+    words = re.findall(r"[a-z]+", text.lower())
+    if not words:
+        return normalize(prefer) if prefer else DEFAULT
+    strong = set(words) & (_HINGLISH - {"hai", "kya", "ke", "ka", "ki", "ko", "kar", "hum", "aap", "sahi", "bhai"})
+    weak = set(words) & {"hai", "kya", "kaise", "ke", "ka", "ki", "ko", "kar", "hum", "aap"}
+    return "hinglish" if strong or len(weak) >= 2 else DEFAULT
 
 
 def ui(lang: str) -> Dict[str, str]:

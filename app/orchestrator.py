@@ -4,7 +4,7 @@ works offline; the LLM only phrases answers from verified FACTS."""
 import re
 from typing import Dict, List, Optional
 
-from . import guardrails, i18n, llm, rag, store
+from . import guardrails, i18n, llm, rag, schemes, store
 from .tools import earnings, money
 
 NUM = re.compile(r"\d+(?:\.\d+)?")
@@ -63,13 +63,14 @@ def detect_intent(low: str) -> str:
     return "knowledge"
 
 
-def handle(user: str, raw_text: str, lang: str = "auto") -> Dict:
+def handle(user: str, raw_text: str, lang: str = "auto", prefer: str = "") -> Dict:
     """Returns {reply, intent, lang, sources, escalate}."""
     secret = guardrails.shared_secret(raw_text)
     text = guardrails.mask_pii(raw_text)
     low = text.lower()
-    L = i18n.detect(text, lang)
-    t = lambda k, **kw: i18n.t(L, k, **kw)  # noqa: E731
+    L = i18n.detect(text, lang, prefer)          # language the worker wrote in -> reply in the same one
+    LT = i18n.normalize(L)                         # template locale (falls back to English if no template exists)
+    t = lambda k, **kw: i18n.t(LT, k, **kw)  # noqa: E731
     prefix = (t("secret") + "\n\n") if secret else ""
 
     def out(reply, intent, sources=None, escalate=False):
@@ -136,11 +137,13 @@ def handle(user: str, raw_text: str, lang: str = "auto") -> Dict:
         if not hits:
             template = t("unsure")
         else:
-            sources = [{"title": h["title"], "url": h["source"]} for h in hits]
-            facts = "\n".join(f"- {h['title']}: {h['summary']} Documents: {', '.join(h['documents']) or 'n/a'}. Apply: {h['how_to_apply']} (Source: {h['source']})" for h in hits)
-            top = hits[0]
-            template = (f"{t('knowledge_hdr')}\n{top['title']}: {top['summary']}\n"
-                        f"→ {top['how_to_apply']}\n{top['source']}")
+            views = [schemes.view(h, LT) for h in hits]
+            sources = [{"title": v["title"], "url": v["apply_url"], "last_verified": v["last_verified"]} for v in views]
+            facts = "\n".join(f"- {v['title']}: {v['summary']} Documents: {', '.join(v['documents']) or 'n/a'}. Apply: {v['how_to_apply']} (Source: {v['apply_url']})" for v in views)
+            top = views[0]
+            hdr = "" if top["text_language"] == LT else t("knowledge_hdr") + "\n"      # header only when text is not in the user's language
+            ver = "" if top["last_verified"] else {"hi": "\n(पुष्टि नहीं - सरकारी पोर्टल पर जाँचें)", "pa": "\n(ਪੁਸ਼ਟੀ ਨਹੀਂ - ਸਰਕਾਰੀ ਪੋਰਟਲ ਤੇ ਜਾਂਚੋ)"}.get(LT, "\n(unverified - confirm on the official portal)")
+            template = f"{hdr}{top['title']}: {top['summary']}\n→ {top['how_to_apply']}\n{top['apply_url']}{ver}"
 
-    reply = llm.compose(text, facts, reply_language=i18n.languages().get(L, "English")) if facts else None
+    reply = llm.compose(text, facts, reply_language=i18n.language_name(L)) if facts else None
     return out(reply or template, intent, sources)

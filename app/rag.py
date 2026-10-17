@@ -16,13 +16,14 @@ STOP = set("a an the is are am was of to for in on at and or my me i you we it t
 
 
 def _tok(text: str) -> List[str]:
-    return [t.lower() for t in _TOKEN.findall(text) if t.lower() not in STOP]
+    toks = [t.lower() for t in _TOKEN.findall(text) if t.lower() not in STOP]
+    return [t[:6] if t.isascii() and len(t) > 6 else t for t in toks]     # crude stem: register ~ registration
 
 
 class Retriever:
     def __init__(self, docs: List[Dict]):
         self.docs = docs
-        self.toks = [_tok(" ".join([d["title"], d["keywords"], d["summary"]])) for d in docs]
+        self.toks = [_tok(" ".join([d["title"], d["keywords"], d["title"], d["keywords"], d["summary"]] + [v for loc in (d.get("i18n") or {}).values() for v in loc.values()])) for d in docs]
         self.avgdl = sum(len(t) for t in self.toks) / max(len(self.toks), 1)
         df = Counter()
         for t in self.toks:
@@ -58,23 +59,14 @@ def get_retriever() -> Retriever:
 
 def match_schemes(age: int, monthly_income: float, epfo_member: bool = False, has_bank: bool = True,
                   income_tax_payer: bool = False, street_vendor: bool = False) -> List[Dict]:
-    """Rule-based Scheme Matchmaker. Returns ids with reason; always says 'confirm on portal'."""
-    r = get_retriever()
-    by_id = {d["id"]: d for d in r.docs}
-    ids = []
-    if 16 <= age <= 59 and not epfo_member and not income_tax_payer:
-        ids.append(("eshram", "Age 16-59 and not in EPFO/ESIC"))
-    if 18 <= age <= 40 and monthly_income <= 15000 and not epfo_member and has_bank:
-        ids.append(("pmsym", "Age 18-40 with income up to Rs 15,000"))
-    if 18 <= age <= 40 and has_bank:
-        ids.append(("apy", "Age 18-40 with a bank account"))
-    if 18 <= age <= 70 and has_bank:
-        ids.append(("pmsby", "Age 18-70 with a bank account"))
-    if 18 <= age <= 50 and has_bank:
-        ids.append(("pmjjby", "Age 18-50 with a bank account"))
-    ids.append(("pmjay", "Check family eligibility; gig workers may be covered"))
-    if street_vendor:
-        ids.append(("svanidhi", "You are a street vendor"))
-    ids.append(("mudra", "For tools/vehicle instead of high-interest loans"))
-    ids.append(("pmkvy", "Free training to move up"))
-    return [{"scheme": by_id[i], "why": why} for i, why in ids if i in by_id]
+    """Legacy lite-UI wrapper over the structured evaluator in app.schemes (drops ruled-out schemes)."""
+    from . import schemes
+    answers = {"age": age, "monthly_income": monthly_income, "epfo_member": epfo_member, "has_bank": has_bank,
+               "income_tax_payer": income_tax_payer, "street_vendor": street_vendor, "nps_member": False, "govt_pension": False}
+    out = []
+    for c in schemes.match(answers):
+        if c["state"] == "appears_ineligible" or (c["missing"] and c["state"] == "more_info_needed" and not c["why_qualify"]):
+            continue
+        scheme = schemes.get(c["id"])
+        out.append({"scheme": scheme, "why": "; ".join(c["why_qualify"]) or c["state_label"], "state": c["state"]})
+    return out

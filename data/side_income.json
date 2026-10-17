@@ -1,23 +1,133 @@
 {
-  "note": "Indicative estimates only. Actual costs and earnings vary by city; confirm training and loan details on official portals.",
-  "delivery": [
-    {"idea": "Add a second delivery app or grocery/quick-commerce slots in your off-peak hours", "cost": 0, "extra_per_month": "2000-4000", "payback_months": 0, "support": "None needed"},
-    {"idea": "Move to higher-paying parcel/e-commerce last-mile work", "cost": 0, "extra_per_month": "3000-6000", "payback_months": 0, "support": "Apply via courier hubs"},
-    {"idea": "Bike or e-bike rental/lease to others when you do not ride", "cost": 25000, "extra_per_month": "3000-5000", "payback_months": 8, "support": "PM MUDRA Shishu loan"}
-  ],
-  "driver": [
-    {"idea": "Get a commercial-driver upgrade (heavy vehicle licence) for higher pay", "cost": 8000, "extra_per_month": "6000-12000", "payback_months": 1, "support": "Free training: PMKVY / state skill missions"},
-    {"idea": "Airport / outstation trips with corporate tie-ups", "cost": 0, "extra_per_month": "4000-8000", "payback_months": 0, "support": "None needed"},
-    {"idea": "School/office contract trips on fixed monthly pay", "cost": 0, "extra_per_month": "5000-10000", "payback_months": 0, "support": "None needed"}
-  ],
-  "domestic": [
-    {"idea": "Caregiver / patient-attendant certification", "cost": 0, "extra_per_month": "4000-8000", "payback_months": 0, "support": "Free training: PMKVY healthcare courses"},
-    {"idea": "Tiffin or cooking service for 5-10 homes", "cost": 5000, "extra_per_month": "4000-9000", "payback_months": 2, "support": "PM MUDRA Shishu loan; FSSAI basic registration"},
-    {"idea": "Housekeeping with a certified agency for steady hours", "cost": 0, "extra_per_month": "3000-6000", "payback_months": 0, "support": "Skill India housekeeping courses"}
-  ],
-  "daily_wage": [
-    {"idea": "Learn a skilled trade (electrician, plumber, mason, welder) for higher daily wage", "cost": 0, "extra_per_month": "5000-10000", "payback_months": 0, "support": "Free training: PMKVY / Skill India"},
-    {"idea": "Buy basic tools and take small repair jobs", "cost": 8000, "extra_per_month": "3000-7000", "payback_months": 3, "support": "PM MUDRA Shishu loan"},
-    {"idea": "Register on e-Shram so you are counted for welfare schemes", "cost": 0, "extra_per_month": "0", "payback_months": 0, "support": "eshram.gov.in or CSC"}
-  ]
+ "note": "Indicative estimates only. Actual costs and earnings vary by city; confirm training and loan details on official portals.",
+ "delivery": [
+  {
+   "idea": "Add a second delivery app or grocery/quick-commerce slots in your off-peak hours",
+   "cost": 0,
+   "extra_per_month": "2000-4000",
+   "payback_months": 0,
+   "support": "None needed",
+   "prerequisites": "Valid ID and bank account; some options need a driving licence or a short course",
+   "time_needed": "Start within days"
+  },
+  {
+   "idea": "Move to higher-paying parcel/e-commerce last-mile work",
+   "cost": 0,
+   "extra_per_month": "3000-6000",
+   "payback_months": 0,
+   "support": "Apply via courier hubs",
+   "prerequisites": "Valid ID and bank account; some options need a driving licence or a short course",
+   "time_needed": "Start within days"
+  },
+  {
+   "idea": "Bike or e-bike rental/lease to others when you do not ride",
+   "cost": 25000,
+   "extra_per_month": "3000-5000",
+   "payback_months": 8,
+   "support": "PM MUDRA Shishu loan",
+   "prerequisites": "Valid ID and bank account; some options need a driving licence or a short course",
+   "time_needed": "Start within days"
+  }
+ ],
+ "driver": [
+  {
+   "idea": "Get a commercial-driver upgrade (heavy vehicle licence) for higher pay",
+   "cost": 8000,
+   "extra_per_month": "6000-12000",
+   "payback_months": 1,
+   "support": "Free training: PMKVY / state skill missions",
+   "prerequisites": "Valid ID and bank account; some options need a driving licence or a short course",
+   "time_needed": "Start within days"
+  },
+  {
+   "idea": "Airport / outstation trips with corporate tie-ups",
+   "cost": 0,
+   "extra_per_month": "4000-8000",
+   "payback_months": 0,
+   "support": "None needed",
+   "prerequisites": "Valid ID and bank account; some options need a driving licence or a short course",
+   "time_needed": "Start within days"
+  },
+  {
+   "idea": "School/office contract trips on fixed monthly pay",
+   "cost": 0,
+   "extra_per_month": "5000-10000",
+   "payback_months": 0,
+   "support": "None needed",
+   "prerequisites": "Valid ID and bank account; some options need a driving licence or a short course",
+   "time_needed": "Start within days"
+  }
+ ],
+ "domestic": [
+  {
+   "idea": "Caregiver / patient-attendant certification",
+   "cost": 0,
+   "extra_per_month": "4000-8000",
+   "payback_months": 0,
+   "support": "Free training: PMKVY healthcare courses",
+   "prerequisites": "Valid ID and bank account; some options need a driving licence or a short course",
+   "time_needed": "Start within days; certificate courses take roughly 2-8 weeks"
+  },
+  {
+   "idea": "Tiffin or cooking service for 5-10 homes",
+   "cost": 5000,
+   "extra_per_month": "4000-9000",
+   "payback_months": 2,
+   "support": "PM MUDRA Shishu loan; FSSAI basic registration",
+   "prerequisites": "Valid ID and bank account; some options need a driving licence or a short course",
+   "time_needed": "Start within days"
+  },
+  {
+   "idea": "Housekeeping with a certified agency for steady hours",
+   "cost": 0,
+   "extra_per_month": "3000-6000",
+   "payback_months": 0,
+   "support": "Skill India housekeeping courses",
+   "prerequisites": "Valid ID and bank account; some options need a driving licence or a short course",
+   "time_needed": "Start within days"
+  }
+ ],
+ "daily_wage": [
+  {
+   "idea": "Learn a skilled trade (electrician, plumber, mason, welder) for higher daily wage",
+   "cost": 0,
+   "extra_per_month": "5000-10000",
+   "payback_months": 0,
+   "support": "Free training: PMKVY / Skill India",
+   "prerequisites": "Valid ID and bank account; some options need a driving licence or a short course",
+   "time_needed": "Start within days; certificate courses take roughly 2-8 weeks"
+  },
+  {
+   "idea": "Buy basic tools and take small repair jobs",
+   "cost": 8000,
+   "extra_per_month": "3000-7000",
+   "payback_months": 3,
+   "support": "PM MUDRA Shishu loan",
+   "prerequisites": "Valid ID and bank account; some options need a driving licence or a short course",
+   "time_needed": "Start within days"
+  },
+  {
+   "idea": "Register on e-Shram so you are counted for welfare schemes",
+   "cost": 0,
+   "extra_per_month": "0",
+   "payback_months": 0,
+   "support": "eshram.gov.in or CSC",
+   "prerequisites": "Valid ID and bank account; some options need a driving licence or a short course",
+   "time_needed": "Start within days"
+  }
+ ],
+ "resources": [
+  {
+   "title": "Skill India Digital - find free/subsidised courses",
+   "url": "https://www.skillindiadigital.gov.in"
+  },
+  {
+   "title": "National Career Service - verified job listings",
+   "url": "https://www.ncs.gov.in"
+  },
+  {
+   "title": "e-Shram - register to access schemes",
+   "url": "https://eshram.gov.in"
+  }
+ ]
 }

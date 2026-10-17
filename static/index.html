@@ -113,7 +113,7 @@ function chatPanel() {
   const add = (txt,c) => { const d=el('div',{class:'m '+c}, txt); if(c==='b') d.append(' ', el('button',{class:'sp','aria-label':'Listen',style:'border:0;background:none;cursor:pointer',onclick:()=>speak(txt)},'🔊')); log.append(d); log.scrollTop=log.scrollHeight; };
   async function send(txt) {
     if (!txt.trim()) return; add(txt,'u'); inp.value='';
-    try { const j = await api('/chat',{user:uid,text:txt,lang}); add(j.reply,'b'); speak(j.reply); }
+    try { const j = await api('/chat',{user:uid,text:txt,lang:'auto',prefer:lang}); add(j.reply,'b'); speak(j.reply); }
     catch(e){ add('⚠ '+e.message,'b'); }
   }
   const mic = el('button',{class:'btn alt',type:'button','aria-label':S.ui_speak||'Speak',onclick:()=>{ const SR=window.SpeechRecognition||window.webkitSpeechRecognition; if(!SR){alert('Voice input is not supported in this browser');return;} const r=new SR(); r.lang=speechTag(); r.onresult=e=>send(e.results[0][0].transcript); r.start(); }},'🎤');

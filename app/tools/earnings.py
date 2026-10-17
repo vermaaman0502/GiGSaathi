@@ -69,6 +69,9 @@ def trip_worth(
     min_hourly: float = 100.0,
     pickup_km: float = 0.0,
     pickup_min: float = 0.0,
+    tolls: float = 0.0,
+    other_expenses: float = 0.0,
+    history_net_per_hour: Optional[float] = None,
 ) -> Dict:
     """Is This Trip Worth It? Net profit after fuel, wear, commission and dead mileage."""
     if mileage_kmpl <= 0:
@@ -78,15 +81,25 @@ def trip_worth(
     fuel_cost = km * fuel_price / mileage_kmpl
     wear = km * wear_per_km
     commission = fare * commission_pct / 100
-    net = fare - commission - fuel_cost - wear
+    net = fare - commission - fuel_cost - wear - tolls - other_expenses
     hourly = net / (minutes / 60) if minutes > 0 else 0.0
+    cost = fuel_cost + wear + tolls + other_expenses          # worker's own costs for this trip
+    keep = 1 - commission_pct / 100
+    breakeven = cost / keep if keep > 0 else None             # fare at which net profit is zero
     if net <= 0:
         verdict = "skip"
     elif hourly >= min_hourly:
         verdict = "accept"
     else:
         verdict = "marginal"
+    assumptions = [f"Mileage {mileage_kmpl} km/l", f"Fuel Rs {fuel_price}/l", f"Wear and tear Rs {wear_per_km}/km", f"Total distance {round(km, 1)} km (trip + empty return/pickup)"]
+    vs_hist = None
+    if history_net_per_hour:
+        vs_hist = {"your_average_net_per_hour": round(history_net_per_hour, 2), "difference_per_hour": round(hourly - history_net_per_hour, 2),
+                   "better_than_average": hourly >= history_net_per_hour}
     return {
+        "assumptions": assumptions, "cost": round(cost, 2), "cost_per_km": round(cost / km, 2) if km else 0.0,
+        "breakeven_fare": round(breakeven, 2) if breakeven is not None else None, "vs_history": vs_hist,
         "net_profit": round(net, 2),
         "net_per_hour": round(hourly, 2),
         "net_per_km": round(net / km, 2) if km else 0.0,

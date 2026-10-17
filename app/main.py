@@ -10,13 +10,21 @@ from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel, Field
 
 from . import i18n, orchestrator, rag, store
+from .routers import r as v2_router
 from .tools import community, docs, earnings, grievance, money, planner, practice
 
 ROOT = Path(__file__).resolve().parent.parent
 STATIC = ROOT / "static"
 
-app = FastAPI(title="GigSaathi", version="0.2.0",
+app = FastAPI(title="GigSaathi", version="0.3.0",
               description="Multilingual GenAI assistant for gig and informal workers: earnings, money, safety, rights, documents, grievances.")
+
+
+import os
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(CORSMiddleware, allow_origins=[o for o in os.environ.get("CORS_ORIGINS", "*").split(",") if o], allow_methods=["*"], allow_headers=["*"])
+app.include_router(v2_router)
 
 
 def _hhmm(h: int) -> str:
@@ -31,7 +39,8 @@ class Base(BaseModel):
 class ChatIn(Base):
     user: str = Field(..., description="Opaque user id (e.g. hashed phone)")
     text: str = Field(..., max_length=2000)
-    lang: str = "auto"
+    lang: str = "auto"      # "auto" (default): reply in the language the message is written in
+    prefer: str = ""        # UI language; used only if the message has no letters
 
 
 class XRayIn(Base):
@@ -163,7 +172,7 @@ def ui_strings(lang: str):
 # ---------- chat & channels ----------
 @app.post("/chat")
 def chat(b: ChatIn):
-    return orchestrator.handle(b.user, b.text, b.lang)
+    return orchestrator.handle(b.user, b.text, b.lang, b.prefer)
 
 
 @app.post("/whatsapp", include_in_schema=False)

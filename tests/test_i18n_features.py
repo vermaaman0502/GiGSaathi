@@ -158,7 +158,7 @@ def test_side_income_diary_and_leaks_endpoints():
 
 def test_whatsapp_replies_in_detected_script():
     r = client.post("/whatsapp", data={"Body": "मुझे पेंशन स्कीम बताओ", "From": "whatsapp:+910000000001"})
-    assert r.status_code == 200 and "<Message>" in r.text and "सरकारी जानकारी" in r.text
+    assert r.status_code == 200 and "<Message>" in r.text and "पेंशन" in r.text and "Source" not in r.text
 
 
 def test_grievance_letter_hindi_and_note():
@@ -168,3 +168,26 @@ def test_grievance_letter_hindi_and_note():
     assert "Respectfully" in hi["letter"] and hi["message"] == i18n.t("hi", "letter_note")
     ta = client.post("/api/grievance", json={**body, "lang": "ta"}).json()
     assert "letter_local" not in ta and ta["message"] == i18n.t("ta", "letter_note")
+
+
+def test_reply_language_follows_message_language_not_ui_language():
+    # UI is Tamil, but the worker typed Hindi -> Hindi reply; typed English -> English reply
+    r = orchestrator.handle("u", "मुझे पेंशन स्कीम बताओ", "auto", "ta")
+    assert r["lang"] == "hi"
+    r = orchestrator.handle("u", "trip fare 120 distance 8 km", "auto", "ta")
+    assert r["lang"] == "en" and "Verdict" in r["reply"]
+    r = orchestrator.handle("u", "ஓய்வூதியம் பற்றி சொல்லுங்கள்", "auto", "hi")
+    assert r["lang"] == "ta"
+    assert orchestrator.handle("u", "250", "auto", "pa")["lang"] == "pa"       # no letters -> UI language
+
+
+def test_hindi_question_gets_hindi_only_reply():
+    r = orchestrator.handle("u", "₹120 किराया 8 km ट्रिप", "auto")
+    assert r["lang"] == "hi"
+    assert not re.search(r"[A-Za-z]{4,}", re.sub(r"https?://\S+|PM-\w+|SHG|MUDRA|EMI|CSC|NALSA|e-Shram", "", r["reply"]))
+
+
+def test_marathi_vs_hindi_and_unsupported_script():
+    assert i18n.detect("मला पेन्शन योजना हवी आहे") == "mr"
+    assert i18n.detect("مجھے پنشن چاہیے") == "ur"
+    assert orchestrator.handle("u", "مجھے پنشن چاہیے")["lang"] == "ur"       # detected; templates fall back to English

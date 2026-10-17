@@ -1,152 +1,950 @@
 [
-  {
-    "id": "eshram",
-    "title": "e-Shram registration (unorganised / gig workers)",
-    "keywords": "e-shram eshram registration unorganised gig platform worker card UAN accident insurance ई-श्रम पंजीकरण",
-    "summary": "National database of unorganised workers. Registration is free. Age 16-59, not an EPFO/ESIC member and not an income-tax payer. Gives an e-Shram card and, through it, access to other schemes; PMSBY accident cover of Rs 2 lakh (death/permanent disability) for the first year.",
-    "documents": ["Aadhaar", "Mobile linked to Aadhaar", "Bank account / IFSC"],
-    "how_to_apply": "Register free at eshram.gov.in or at the nearest CSC. Helpline 14434.",
-    "source": "https://eshram.gov.in",
-    "last_checked": "seed data - confirm on the official portal"
+ {
+  "id": "eshram",
+  "kind": "scheme",
+  "title": "e-Shram registration (unorganised / gig & platform workers)",
+  "authority": "Ministry of Labour & Employment",
+  "keywords": "e-shram eshram registration unorganised gig platform worker card UAN accident insurance ई-श्रम पंजीकरण ਈ-ਸ਼੍ਰਮ",
+  "summary": "National database of unorganised workers. Free registration for workers aged 16-59 who are not EPFO/ESIC members and not income-tax payers (there is no income limit). Gig and platform workers can register on self-declaration and receive a Universal Account Number. Registered workers get PMSBY accident cover (Rs 2 lakh death/permanent disability, Rs 1 lakh partial; first-year premium paid by the Ministry - check current terms).",
+  "benefits": [
+   "Universal Account Number / e-Shram card",
+   "PMSBY accident insurance (Rs 2 lakh death/permanent disability, Rs 1 lakh partial) - confirm current terms",
+   "Needed to access other schemes for unorganised and platform workers"
+  ],
+  "rules": {
+   "min_age": 16,
+   "max_age": 59,
+   "excluded_if": [
+    "epfo_member",
+    "income_tax_payer"
+   ],
+   "needs": [
+    "age",
+    "epfo_member",
+    "income_tax_payer"
+   ]
   },
-  {
-    "id": "pmjay",
-    "title": "Ayushman Bharat PM-JAY health cover",
-    "keywords": "ayushman bharat pmjay health insurance hospital treatment 5 lakh आयुष्मान",
-    "summary": "Cashless hospital cover up to Rs 5 lakh per family per year at empanelled hospitals for eligible families. The 2025 Union Budget announced PM-JAY cover for registered platform/gig workers; check current status before applying.",
-    "documents": ["Aadhaar", "Ration card or eligibility proof", "e-Shram card (for gig workers)"],
-    "how_to_apply": "Check eligibility at pmjay.gov.in or call 14555; apply at an Ayushman Mitra desk, empanelled hospital or CSC.",
-    "source": "https://pmjay.gov.in",
-    "last_checked": "seed data - confirm on the official portal"
+  "exclusions": [
+   "Member of EPFO or ESIC",
+   "Income-tax payer",
+   "Age outside 16-59"
+  ],
+  "documents": [
+   "Aadhaar",
+   "Mobile number linked to Aadhaar",
+   "Bank account / IFSC"
+  ],
+  "steps": [
+   "Visit eshram.gov.in or your nearest CSC",
+   "Verify with Aadhaar-linked mobile (never share your OTP with anyone else)",
+   "Fill occupation and bank details",
+   "Download your e-Shram card / UAN"
+  ],
+  "apply_url": "https://eshram.gov.in",
+  "how_to_apply": "Register free at eshram.gov.in or at the nearest CSC. Helpline 14434.",
+  "channels": [
+   "CSC",
+   "e-Shram helpline 14434"
+  ],
+  "confirm_officially": false,
+  "sources": [
+   {
+    "title": "e-Shram FAQs",
+    "url": "https://eshram.gov.in/faqs",
+    "authority": "Ministry of Labour & Employment",
+    "last_verified": "2026-10-17"
+   },
+   {
+    "title": "PIB: e-Shram registers gig & platform workers; PM-JAY interoperability (29 Jan 2026)",
+    "url": "https://www.pib.gov.in",
+    "authority": "Press Information Bureau, Govt. of India",
+    "last_verified": "2026-10-17"
+   }
+  ],
+  "source": "https://eshram.gov.in",
+  "last_verified": "2026-10-17",
+  "i18n": {
+   "hi": {
+    "title": "ई-श्रम पंजीकरण (असंगठित / गिग और प्लेटफ़ॉर्म कामगार)",
+    "summary": "असंगठित कामगारों का राष्ट्रीय डेटाबेस। 16-59 वर्ष के वे कामगार मुफ़्त पंजीकरण कर सकते हैं जो EPFO/ESIC के सदस्य नहीं हैं और आयकर दाता नहीं हैं (आय की कोई सीमा नहीं)। गिग और प्लेटफ़ॉर्म कामगार स्व-घोषणा पर पंजीकरण कर यूनिवर्सल अकाउंट नंबर पा सकते हैं। पंजीकृत कामगारों को PMSBY दुर्घटना बीमा मिलता है (मृत्यु/स्थायी अपंगता पर ₹2 लाख, आंशिक पर ₹1 लाख; पहले साल का प्रीमियम मंत्रालय देता है - वर्तमान शर्तें जाँच लें)।",
+    "how_to_apply": "eshram.gov.in पर या नज़दीकी CSC पर मुफ़्त पंजीकरण करें। हेल्पलाइन 14434।"
+   },
+   "pa": {
+    "title": "ਈ-ਸ਼੍ਰਮ ਰਜਿਸਟ੍ਰੇਸ਼ਨ (ਅਸੰਗਠਿਤ / ਗਿਗ ਅਤੇ ਪਲੇਟਫਾਰਮ ਕਾਮੇ)",
+    "summary": "ਅਸੰਗਠਿਤ ਕਾਮਿਆਂ ਦਾ ਰਾਸ਼ਟਰੀ ਡੇਟਾਬੇਸ। 16-59 ਸਾਲ ਦੇ ਉਹ ਕਾਮੇ ਮੁਫ਼ਤ ਰਜਿਸਟਰ ਕਰ ਸਕਦੇ ਹਨ ਜੋ EPFO/ESIC ਦੇ ਮੈਂਬਰ ਨਹੀਂ ਅਤੇ ਇਨਕਮ ਟੈਕਸ ਦੇਣ ਵਾਲੇ ਨਹੀਂ (ਆਮਦਨ ਦੀ ਕੋਈ ਹੱਦ ਨਹੀਂ)। ਗਿਗ ਅਤੇ ਪਲੇਟਫਾਰਮ ਕਾਮੇ ਸਵੈ-ਘੋਸ਼ਣਾ ਨਾਲ ਰਜਿਸਟਰ ਕਰ ਕੇ ਯੂਨੀਵਰਸਲ ਅਕਾਊਂਟ ਨੰਬਰ ਲੈ ਸਕਦੇ ਹਨ। ਰਜਿਸਟਰਡ ਕਾਮਿਆਂ ਨੂੰ PMSBY ਹਾਦਸਾ ਬੀਮਾ ਮਿਲਦਾ ਹੈ (ਮੌਤ/ਸਥਾਈ ਅਪੰਗਤਾ ਤੇ ₹2 ਲੱਖ, ਅੰਸ਼ਕ ਤੇ ₹1 ਲੱਖ; ਪਹਿਲੇ ਸਾਲ ਦਾ ਪ੍ਰੀਮੀਅਮ ਮੰਤਰਾਲਾ ਭਰਦਾ ਹੈ - ਮੌਜੂਦਾ ਸ਼ਰਤਾਂ ਜਾਂਚ ਲਓ)।",
+    "how_to_apply": "eshram.gov.in ਤੇ ਜਾਂ ਨੇੜਲੇ CSC ਤੇ ਮੁਫ਼ਤ ਰਜਿਸਟਰ ਕਰੋ। ਹੈਲਪਲਾਈਨ 14434।"
+   }
   },
-  {
-    "id": "pmsym",
-    "title": "PM Shram Yogi Maandhan (PM-SYM) pension",
-    "keywords": "pm-sym pension old age maandhan retirement 3000 पेंशन श्रम योगी",
-    "summary": "Pension of Rs 3,000 a month after age 60 for unorganised workers aged 18-40 earning up to Rs 15,000 a month. You pay Rs 55-200 a month depending on entry age and the Government matches it.",
-    "documents": ["Aadhaar", "Savings bank account / Jan Dhan", "Mobile number"],
-    "how_to_apply": "Enrol at a CSC with Aadhaar and bank passbook; the first contribution is paid in cash.",
-    "source": "https://maandhan.in",
-    "last_checked": "seed data - confirm on the official portal"
+  "last_checked": "verified 2026-10-17"
+ },
+ {
+  "id": "pmjay",
+  "kind": "scheme",
+  "title": "Ayushman Bharat PM-JAY health cover",
+  "authority": "National Health Authority",
+  "keywords": "ayushman bharat pmjay health insurance hospital treatment 5 lakh आयुष्मान ਆਯੁਸ਼ਮਾਨ gig worker",
+  "summary": "Cashless hospital cover up to Rs 5 lakh per family per year at empanelled hospitals for eligible families. The Union Budget 2025-26 announced PM-JAY access for registered gig/platform workers and e-Shram and PM-JAY have been made interoperable (PIB, Jan 2026), but the go-live date and enrolment process for gig workers could not be confirmed - check with the National Health Authority before relying on it.",
+  "benefits": [
+   "Up to Rs 5 lakh per family per year for hospitalisation (eligible families)",
+   "Gig-worker access announced; rollout status unconfirmed"
+  ],
+  "rules": {
+   "needs": [
+    "has_eshram"
+   ],
+   "soft": true
   },
-  {
-    "id": "apy",
-    "title": "Atal Pension Yojana (APY)",
-    "keywords": "atal pension yojana apy pension retirement savings",
-    "summary": "Guaranteed monthly pension of Rs 1,000-5,000 from age 60 for anyone aged 18-40 with a bank account. Monthly contribution depends on your age and chosen pension.",
-    "documents": ["Bank account", "Aadhaar", "Mobile number"],
-    "how_to_apply": "Apply at your bank branch or through net banking.",
-    "source": "https://www.npscra.nsdl.co.in/scheme-details.php",
-    "last_checked": "seed data - confirm on the official portal"
+  "exclusions": [
+   "Eligibility is family/state-rule based - confirm on the official portal"
+  ],
+  "documents": [
+   "Aadhaar",
+   "Ration card or family eligibility proof",
+   "e-Shram card (for platform workers)"
+  ],
+  "steps": [
+   "Register on e-Shram first (if you are a platform worker)",
+   "Check eligibility at pmjay.gov.in or call 14555",
+   "Visit an Ayushman Mitra desk, empanelled hospital or CSC"
+  ],
+  "apply_url": "https://pmjay.gov.in",
+  "how_to_apply": "Check eligibility at pmjay.gov.in or call 14555; apply at an Ayushman Mitra desk, empanelled hospital or CSC.",
+  "channels": [
+   "PM-JAY helpline 14555",
+   "CSC",
+   "Empanelled hospital Ayushman Mitra"
+  ],
+  "confirm_officially": true,
+  "sources": [
+   {
+    "title": "PM-JAY official portal",
+    "url": "https://pmjay.gov.in",
+    "authority": "National Health Authority",
+    "last_verified": null
+   },
+   {
+    "title": "PIB: e-Shram registers gig & platform workers; PM-JAY interoperability (29 Jan 2026)",
+    "url": "https://www.pib.gov.in",
+    "authority": "Press Information Bureau, Govt. of India",
+    "last_verified": "2026-10-17"
+   }
+  ],
+  "source": "https://pmjay.gov.in",
+  "last_verified": "2026-10-17",
+  "i18n": {
+   "hi": {
+    "title": "आयुष्मान भारत PM-JAY स्वास्थ्य कवर",
+    "summary": "पात्र परिवारों के लिए सूचीबद्ध अस्पतालों में प्रति परिवार प्रति वर्ष ₹5 लाख तक का कैशलेस इलाज। केंद्रीय बजट 2025-26 में पंजीकृत गिग/प्लेटफ़ॉर्म कामगारों को PM-JAY का लाभ देने की घोषणा हुई और e-Shram व PM-JAY को आपस में जोड़ा गया है (PIB, जनवरी 2026), लेकिन गिग कामगारों के लिए शुरू होने की तारीख और प्रक्रिया की पुष्टि नहीं हो सकी - भरोसा करने से पहले राष्ट्रीय स्वास्थ्य प्राधिकरण से पूछें।",
+    "how_to_apply": "pmjay.gov.in पर या 14555 पर पात्रता जाँचें; आयुष्मान मित्र डेस्क, सूचीबद्ध अस्पताल या CSC पर आवेदन करें।"
+   },
+   "pa": {
+    "title": "ਆਯੁਸ਼ਮਾਨ ਭਾਰਤ PM-JAY ਸਿਹਤ ਕਵਰ",
+    "summary": "ਯੋਗ ਪਰਿਵਾਰਾਂ ਲਈ ਸੂਚੀਬੱਧ ਹਸਪਤਾਲਾਂ ਵਿੱਚ ਪ੍ਰਤੀ ਪਰਿਵਾਰ ਪ੍ਰਤੀ ਸਾਲ ₹5 ਲੱਖ ਤੱਕ ਕੈਸ਼ਲੈੱਸ ਇਲਾਜ। ਕੇਂਦਰੀ ਬਜਟ 2025-26 ਵਿੱਚ ਰਜਿਸਟਰਡ ਗਿਗ/ਪਲੇਟਫਾਰਮ ਕਾਮਿਆਂ ਨੂੰ PM-JAY ਦਾ ਲਾਭ ਦੇਣ ਦਾ ਐਲਾਨ ਹੋਇਆ ਅਤੇ e-Shram ਤੇ PM-JAY ਨੂੰ ਜੋੜਿਆ ਗਿਆ ਹੈ (PIB, ਜਨਵਰੀ 2026), ਪਰ ਗਿਗ ਕਾਮਿਆਂ ਲਈ ਸ਼ੁਰੂ ਹੋਣ ਦੀ ਤਾਰੀਖ ਅਤੇ ਪ੍ਰਕਿਰਿਆ ਦੀ ਪੁਸ਼ਟੀ ਨਹੀਂ ਹੋ ਸਕੀ - ਭਰੋਸਾ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਰਾਸ਼ਟਰੀ ਸਿਹਤ ਅਥਾਰਟੀ ਤੋਂ ਪੁੱਛੋ।",
+    "how_to_apply": "pmjay.gov.in ਤੇ ਜਾਂ 14555 ਤੇ ਯੋਗਤਾ ਜਾਂਚੋ; ਆਯੁਸ਼ਮਾਨ ਮਿੱਤਰ ਡੈਸਕ, ਸੂਚੀਬੱਧ ਹਸਪਤਾਲ ਜਾਂ CSC ਤੇ ਅਰਜ਼ੀ ਦਿਓ।"
+   }
   },
-  {
-    "id": "pmsby",
-    "title": "PM Suraksha Bima Yojana (accident cover)",
-    "keywords": "pmsby accident insurance disability death suraksha bima cheap premium दुर्घटना बीमा",
-    "summary": "Accident death/disability cover of Rs 2 lakh (Rs 1 lakh partial disability) for age 18-70 with a bank account. Premium is about Rs 20 a year, auto-debited from your account.",
-    "documents": ["Bank account", "Aadhaar"],
-    "how_to_apply": "Enrol at your bank or through net banking before 31 May each year.",
-    "source": "https://jansuraksha.gov.in",
-    "last_checked": "seed data - confirm on the official portal"
+  "last_checked": "verified 2026-10-17"
+ },
+ {
+  "id": "pmsym",
+  "kind": "scheme",
+  "title": "PM Shram Yogi Maandhan (PM-SYM) pension",
+  "authority": "Ministry of Labour & Employment (managed by LIC)",
+  "keywords": "pm-sym pension old age maandhan retirement 3000 पेंशन श्रम योगी ਪੈਨਸ਼ਨ",
+  "summary": "Voluntary pension for unorganised workers: Rs 3,000 a month after age 60 (50% family pension to spouse). Entry age 18-40, monthly income up to Rs 15,000, and not covered by EPFO, ESIC or NPS, not an income-tax payer and not receiving another government pension. Worker pays Rs 55 (age 18) to Rs 200 (age 40) a month and the Government matches it 1:1.",
+  "benefits": [
+   "Rs 3,000 per month pension from age 60",
+   "50% family pension to spouse",
+   "Government matches your monthly contribution 1:1"
+  ],
+  "rules": {
+   "min_age": 18,
+   "max_age": 40,
+   "max_monthly_income": 15000,
+   "excluded_if": [
+    "epfo_member",
+    "nps_member",
+    "income_tax_payer",
+    "govt_pension"
+   ],
+   "requires": [
+    "has_bank"
+   ],
+   "needs": [
+    "age",
+    "monthly_income",
+    "epfo_member",
+    "nps_member",
+    "income_tax_payer",
+    "has_bank"
+   ]
   },
-  {
-    "id": "pmjjby",
-    "title": "PM Jeevan Jyoti Bima Yojana (life cover)",
-    "keywords": "pmjjby life insurance death cover jeevan jyoti bima जीवन ज्योति",
-    "summary": "Life cover of Rs 2 lakh for age 18-50 with a bank account. Premium is about Rs 436 a year, auto-debited.",
-    "documents": ["Bank account", "Aadhaar"],
-    "how_to_apply": "Enrol at your bank branch or net banking.",
-    "source": "https://jansuraksha.gov.in",
-    "last_checked": "seed data - confirm on the official portal"
+  "exclusions": [
+   "Covered by EPFO, ESIC or NPS",
+   "Income-tax payer",
+   "Receiving another government pension",
+   "Age outside 18-40 or income above Rs 15,000/month"
+  ],
+  "documents": [
+   "Aadhaar",
+   "Savings bank account / Jan Dhan",
+   "Mobile number"
+  ],
+  "steps": [
+   "Go to a CSC with Aadhaar and bank passbook",
+   "Verify details and choose to enrol",
+   "Pay the first contribution",
+   "Keep paying monthly via auto-debit until age 60"
+  ],
+  "apply_url": "https://maandhan.in",
+  "how_to_apply": "Enrol at a CSC with Aadhaar and bank passbook, or via the Maandhan portal.",
+  "channels": [
+   "CSC",
+   "Maandhan helpline 1800 267 6888"
+  ],
+  "confirm_officially": false,
+  "sources": [
+   {
+    "title": "PIB: PM-SYM",
+    "url": "https://www.pib.gov.in/PressNoteDetails.aspx?NoteId=153849&ModuleId=3",
+    "authority": "Press Information Bureau",
+    "last_verified": "2026-10-17"
+   },
+   {
+    "title": "Ministry of Labour PM-SYM note",
+    "url": "https://www.labour.gov.in/static/uploads/2025/06/49a10165d1cf6f46e3bfbb52ba14f325.pdf",
+    "authority": "Ministry of Labour & Employment",
+    "last_verified": "2026-10-17"
+   }
+  ],
+  "source": "https://maandhan.in",
+  "last_verified": "2026-10-17",
+  "i18n": {
+   "hi": {
+    "title": "प्रधानमंत्री श्रम योगी मानधन (PM-SYM) पेंशन",
+    "summary": "असंगठित कामगारों के लिए स्वैच्छिक पेंशन: 60 वर्ष के बाद ₹3,000 प्रति माह (पति/पत्नी को 50% पारिवारिक पेंशन)। प्रवेश आयु 18-40, मासिक आय ₹15,000 तक, और EPFO, ESIC या NPS में शामिल न हों, आयकर दाता न हों और कोई अन्य सरकारी पेंशन न मिलती हो। कामगार 55 (18 वर्ष) से ₹200 (40 वर्ष) प्रति माह देता है और सरकार उतनी ही राशि जोड़ती है।",
+    "how_to_apply": "आधार और बैंक पासबुक लेकर CSC पर या मानधन पोर्टल से नामांकन करें।"
+   },
+   "pa": {
+    "title": "ਪ੍ਰਧਾਨ ਮੰਤਰੀ ਸ਼੍ਰਮ ਯੋਗੀ ਮਾਨਧਨ (PM-SYM) ਪੈਨਸ਼ਨ",
+    "summary": "ਅਸੰਗਠਿਤ ਕਾਮਿਆਂ ਲਈ ਸਵੈ-ਇੱਛੁਕ ਪੈਨਸ਼ਨ: 60 ਸਾਲ ਤੋਂ ਬਾਅਦ ₹3,000 ਪ੍ਰਤੀ ਮਹੀਨਾ (ਜੀਵਨ ਸਾਥੀ ਨੂੰ 50% ਪਰਿਵਾਰਕ ਪੈਨਸ਼ਨ)। ਦਾਖ਼ਲੇ ਦੀ ਉਮਰ 18-40, ਮਹੀਨਾਵਾਰ ਆਮਦਨ ₹15,000 ਤੱਕ, ਅਤੇ EPFO, ESIC ਜਾਂ NPS ਵਿੱਚ ਸ਼ਾਮਲ ਨਾ ਹੋਵੇ, ਇਨਕਮ ਟੈਕਸ ਦੇਣ ਵਾਲਾ ਨਾ ਹੋਵੇ ਅਤੇ ਹੋਰ ਸਰਕਾਰੀ ਪੈਨਸ਼ਨ ਨਾ ਮਿਲਦੀ ਹੋਵੇ। ਕਾਮਾ ₹55 (18 ਸਾਲ) ਤੋਂ ₹200 (40 ਸਾਲ) ਪ੍ਰਤੀ ਮਹੀਨਾ ਭਰਦਾ ਹੈ ਅਤੇ ਸਰਕਾਰ ਓਨੀ ਹੀ ਰਕਮ ਜੋੜਦੀ ਹੈ।",
+    "how_to_apply": "ਆਧਾਰ ਅਤੇ ਬੈਂਕ ਪਾਸਬੁੱਕ ਲੈ ਕੇ CSC ਤੇ ਜਾਂ ਮਾਨਧਨ ਪੋਰਟਲ ਰਾਹੀਂ ਦਾਖ਼ਲਾ ਲਓ।"
+   }
   },
-  {
-    "id": "svanidhi",
-    "title": "PM SVANidhi (street vendor loan)",
-    "keywords": "svanidhi street vendor loan working capital hawker फेरीवाला लोन",
-    "summary": "Collateral-free working-capital loan for street vendors starting at Rs 15,000, with larger loans on timely repayment and a digital-payment cash-back.",
-    "documents": ["Vending certificate / letter of recommendation", "Aadhaar", "Bank account"],
-    "how_to_apply": "Apply at pmsvanidhi.mohua.gov.in, a bank branch or CSC.",
-    "source": "https://pmsvanidhi.mohua.gov.in",
-    "last_checked": "seed data - confirm on the official portal"
+  "last_checked": "verified 2026-10-17"
+ },
+ {
+  "id": "apy",
+  "kind": "scheme",
+  "title": "Atal Pension Yojana (APY)",
+  "authority": "PFRDA / Ministry of Finance",
+  "keywords": "atal pension yojana apy pension retirement savings ਅਟਲ ਪੈਨਸ਼ਨ अटल पेंशन",
+  "summary": "Guaranteed monthly pension of Rs 1,000-5,000 from age 60 for anyone aged 18-40 with a bank account. Monthly contribution depends on your age and chosen pension. (Unverified seed - confirm current rules.)",
+  "benefits": [
+   "Rs 1,000-5,000 monthly pension from age 60"
+  ],
+  "rules": {
+   "min_age": 18,
+   "max_age": 40,
+   "excluded_if": [
+    "income_tax_payer"
+   ],
+   "requires": [
+    "has_bank"
+   ],
+   "needs": [
+    "age",
+    "has_bank",
+    "income_tax_payer"
+   ]
   },
-  {
-    "id": "mudra",
-    "title": "PM MUDRA loans",
-    "keywords": "mudra loan business shishu kishor tarun small business vehicle मुद्रा",
-    "summary": "Collateral-free small-business loans: Shishu (up to Rs 50,000), Kishore (up to Rs 5 lakh), Tarun (up to Rs 10 lakh), with higher limits for Tarun Plus. Useful for buying a vehicle or tools instead of a high-interest app loan.",
-    "documents": ["Aadhaar", "Address proof", "Business/work proof", "Bank statement"],
-    "how_to_apply": "Apply at any bank, NBFC or MFI, or at udyamimitra.in.",
-    "source": "https://www.mudra.org.in",
-    "last_checked": "seed data - confirm on the official portal"
+  "exclusions": [
+   "Age outside 18-40",
+   "Income-tax payers are not eligible to join (rule introduced in 2022) - confirm current rule"
+  ],
+  "documents": [
+   "Bank account",
+   "Aadhaar",
+   "Mobile number"
+  ],
+  "steps": [
+   "Go to your bank branch or net banking",
+   "Choose a pension amount",
+   "Set up auto-debit"
+  ],
+  "apply_url": "https://www.npscra.nsdl.co.in/scheme-details.php",
+  "how_to_apply": "Apply at your bank branch or through net banking.",
+  "channels": [
+   "Bank branch"
+  ],
+  "confirm_officially": false,
+  "sources": [
+   {
+    "title": "NPS Trust - APY",
+    "url": "https://www.npscra.nsdl.co.in/scheme-details.php",
+    "authority": "PFRDA",
+    "last_verified": null
+   }
+  ],
+  "source": "https://www.npscra.nsdl.co.in/scheme-details.php",
+  "last_verified": null,
+  "i18n": {
+   "hi": {
+    "title": "अटल पेंशन योजना (APY)",
+    "summary": "बैंक खाते वाले 18-40 वर्ष के किसी भी व्यक्ति के लिए 60 वर्ष से ₹1,000-5,000 मासिक पेंशन की गारंटी। मासिक अंशदान आपकी उम्र और चुनी गई पेंशन पर निर्भर है। (अप्रमाणित प्रारंभिक जानकारी - वर्तमान नियम जाँचें।)",
+    "how_to_apply": "अपनी बैंक शाखा में या नेट बैंकिंग से आवेदन करें।"
+   },
+   "pa": {
+    "title": "ਅਟਲ ਪੈਨਸ਼ਨ ਯੋਜਨਾ (APY)",
+    "summary": "ਬੈਂਕ ਖਾਤੇ ਵਾਲੇ 18-40 ਸਾਲ ਦੇ ਕਿਸੇ ਵੀ ਵਿਅਕਤੀ ਲਈ 60 ਸਾਲ ਤੋਂ ₹1,000-5,000 ਮਹੀਨਾਵਾਰ ਪੈਨਸ਼ਨ ਦੀ ਗਾਰੰਟੀ। ਮਹੀਨਾਵਾਰ ਯੋਗਦਾਨ ਤੁਹਾਡੀ ਉਮਰ ਅਤੇ ਚੁਣੀ ਪੈਨਸ਼ਨ ਤੇ ਨਿਰਭਰ ਹੈ। (ਅਣ-ਪੁਸ਼ਟੀ ਸ਼ੁਰੂਆਤੀ ਜਾਣਕਾਰੀ - ਮੌਜੂਦਾ ਨਿਯਮ ਜਾਂਚੋ।)",
+    "how_to_apply": "ਆਪਣੀ ਬੈਂਕ ਸ਼ਾਖਾ ਵਿੱਚ ਜਾਂ ਨੈੱਟ ਬੈਂਕਿੰਗ ਰਾਹੀਂ ਅਰਜ਼ੀ ਦਿਓ।"
+   }
   },
-  {
-    "id": "social_security_code",
-    "title": "Code on Social Security 2020 - gig and platform workers",
-    "keywords": "code social security gig worker platform aggregator welfare fund rights law",
-    "summary": "The Code recognises gig and platform workers and requires aggregators to contribute 1-2% of annual turnover (capped at 5% of payments to workers) to a social security fund. Implementation depends on rules and state action - check current status.",
-    "documents": [],
-    "how_to_apply": "Register on e-Shram to be counted for benefits when schemes roll out.",
-    "source": "https://labour.gov.in",
-    "last_checked": "seed data - confirm on the official portal"
+  "last_checked": "unverified seed data - confirm on the official portal"
+ },
+ {
+  "id": "pmsby",
+  "kind": "scheme",
+  "title": "PM Suraksha Bima Yojana (accident cover)",
+  "authority": "Ministry of Finance",
+  "keywords": "pmsby accident insurance disability death suraksha bima cheap premium दुर्घटना बीमा ਹਾਦਸਾ ਬੀਮਾ",
+  "summary": "Accident death/disability cover of Rs 2 lakh (Rs 1 lakh partial disability) for age 18-70 with a bank account. Premium is about Rs 20 a year, auto-debited. (Unverified seed - confirm current premium.)",
+  "benefits": [
+   "Rs 2 lakh accidental death / permanent disability, Rs 1 lakh partial"
+  ],
+  "rules": {
+   "min_age": 18,
+   "max_age": 70,
+   "requires": [
+    "has_bank"
+   ],
+   "needs": [
+    "age",
+    "has_bank"
+   ]
   },
-  {
-    "id": "state_gig_laws",
-    "title": "State gig-worker welfare laws (Rajasthan, Karnataka and others)",
-    "keywords": "rajasthan karnataka state gig worker welfare board law cess registration राजस्थान कर्नाटक",
-    "summary": "Some states, including Rajasthan (2023) and Karnataka (2025), have passed laws for platform-based gig workers with welfare boards, registration and grievance mechanisms. Rules differ by state - ask the state labour department.",
-    "documents": ["Aadhaar", "Platform ID / payout proof"],
-    "how_to_apply": "Contact your state labour department or welfare board office or CSC.",
-    "source": "https://labour.gov.in",
-    "last_checked": "seed data - confirm with your state labour department"
+  "exclusions": [
+   "Age outside 18-70",
+   "No bank account"
+  ],
+  "documents": [
+   "Bank account",
+   "Aadhaar"
+  ],
+  "steps": [
+   "Ask your bank or use net banking",
+   "Give auto-debit consent",
+   "Keep balance for the yearly premium"
+  ],
+  "apply_url": "https://jansuraksha.gov.in",
+  "how_to_apply": "Enrol at your bank or through net banking.",
+  "channels": [
+   "Bank branch"
+  ],
+  "confirm_officially": false,
+  "sources": [
+   {
+    "title": "Jan Suraksha portal",
+    "url": "https://jansuraksha.gov.in",
+    "authority": "Ministry of Finance",
+    "last_verified": null
+   }
+  ],
+  "source": "https://jansuraksha.gov.in",
+  "last_verified": null,
+  "i18n": {
+   "hi": {
+    "title": "प्रधानमंत्री सुरक्षा बीमा योजना (दुर्घटना बीमा)",
+    "summary": "बैंक खाते वाले 18-70 वर्ष के लोगों के लिए दुर्घटना में मृत्यु/अपंगता पर ₹2 लाख (आंशिक अपंगता पर ₹1 लाख) का बीमा। प्रीमियम लगभग ₹20 प्रति वर्ष, अपने-आप कटता है। (अप्रमाणित प्रारंभिक जानकारी - वर्तमान प्रीमियम जाँचें।)",
+    "how_to_apply": "अपने बैंक में या नेट बैंकिंग से नामांकन करें।"
+   },
+   "pa": {
+    "title": "ਪ੍ਰਧਾਨ ਮੰਤਰੀ ਸੁਰੱਖਿਆ ਬੀਮਾ ਯੋਜਨਾ (ਹਾਦਸਾ ਬੀਮਾ)",
+    "summary": "ਬੈਂਕ ਖਾਤੇ ਵਾਲੇ 18-70 ਸਾਲ ਦੇ ਲੋਕਾਂ ਲਈ ਹਾਦਸੇ ਵਿੱਚ ਮੌਤ/ਅਪੰਗਤਾ ਤੇ ₹2 ਲੱਖ (ਅੰਸ਼ਕ ਅਪੰਗਤਾ ਤੇ ₹1 ਲੱਖ) ਦਾ ਬੀਮਾ। ਪ੍ਰੀਮੀਅਮ ਲਗਭਗ ₹20 ਪ੍ਰਤੀ ਸਾਲ, ਆਪਣੇ ਆਪ ਕੱਟਦਾ ਹੈ। (ਅਣ-ਪੁਸ਼ਟੀ ਸ਼ੁਰੂਆਤੀ ਜਾਣਕਾਰੀ - ਮੌਜੂਦਾ ਪ੍ਰੀਮੀਅਮ ਜਾਂਚੋ।)",
+    "how_to_apply": "ਆਪਣੇ ਬੈਂਕ ਵਿੱਚ ਜਾਂ ਨੈੱਟ ਬੈਂਕਿੰਗ ਰਾਹੀਂ ਦਾਖ਼ਲਾ ਲਓ।"
+   }
   },
-  {
-    "id": "nalsa",
+  "last_checked": "unverified seed data - confirm on the official portal"
+ },
+ {
+  "id": "pmjjby",
+  "kind": "scheme",
+  "title": "PM Jeevan Jyoti Bima Yojana (life cover)",
+  "authority": "Ministry of Finance",
+  "keywords": "pmjjby life insurance death cover jeevan jyoti bima जीवन ज्योति ਜੀਵਨ ਜੋਤੀ",
+  "summary": "Life cover of Rs 2 lakh for age 18-50 with a bank account. Premium is about Rs 436 a year, auto-debited. (Unverified seed - confirm current premium.)",
+  "benefits": [
+   "Rs 2 lakh life cover"
+  ],
+  "rules": {
+   "min_age": 18,
+   "max_age": 50,
+   "requires": [
+    "has_bank"
+   ],
+   "needs": [
+    "age",
+    "has_bank"
+   ]
+  },
+  "exclusions": [
+   "Age outside 18-50",
+   "No bank account"
+  ],
+  "documents": [
+   "Bank account",
+   "Aadhaar"
+  ],
+  "steps": [
+   "Ask your bank or use net banking",
+   "Give auto-debit consent"
+  ],
+  "apply_url": "https://jansuraksha.gov.in",
+  "how_to_apply": "Enrol at your bank branch or net banking.",
+  "channels": [
+   "Bank branch"
+  ],
+  "confirm_officially": false,
+  "sources": [
+   {
+    "title": "Jan Suraksha portal",
+    "url": "https://jansuraksha.gov.in",
+    "authority": "Ministry of Finance",
+    "last_verified": null
+   }
+  ],
+  "source": "https://jansuraksha.gov.in",
+  "last_verified": null,
+  "i18n": {
+   "hi": {
+    "title": "प्रधानमंत्री जीवन ज्योति बीमा योजना (जीवन बीमा)",
+    "summary": "बैंक खाते वाले 18-50 वर्ष के लोगों के लिए ₹2 लाख का जीवन बीमा। प्रीमियम लगभग ₹436 प्रति वर्ष, अपने-आप कटता है। (अप्रमाणित प्रारंभिक जानकारी - वर्तमान प्रीमियम जाँचें।)",
+    "how_to_apply": "अपनी बैंक शाखा में या नेट बैंकिंग से नामांकन करें।"
+   },
+   "pa": {
+    "title": "ਪ੍ਰਧਾਨ ਮੰਤਰੀ ਜੀਵਨ ਜੋਤੀ ਬੀਮਾ ਯੋਜਨਾ (ਜੀਵਨ ਬੀਮਾ)",
+    "summary": "ਬੈਂਕ ਖਾਤੇ ਵਾਲੇ 18-50 ਸਾਲ ਦੇ ਲੋਕਾਂ ਲਈ ₹2 ਲੱਖ ਦਾ ਜੀਵਨ ਬੀਮਾ। ਪ੍ਰੀਮੀਅਮ ਲਗਭਗ ₹436 ਪ੍ਰਤੀ ਸਾਲ, ਆਪਣੇ ਆਪ ਕੱਟਦਾ ਹੈ। (ਅਣ-ਪੁਸ਼ਟੀ ਸ਼ੁਰੂਆਤੀ ਜਾਣਕਾਰੀ - ਮੌਜੂਦਾ ਪ੍ਰੀਮੀਅਮ ਜਾਂਚੋ।)",
+    "how_to_apply": "ਆਪਣੀ ਬੈਂਕ ਸ਼ਾਖਾ ਜਾਂ ਨੈੱਟ ਬੈਂਕਿੰਗ ਰਾਹੀਂ ਦਾਖ਼ਲਾ ਲਓ।"
+   }
+  },
+  "last_checked": "unverified seed data - confirm on the official portal"
+ },
+ {
+  "id": "svanidhi",
+  "kind": "scheme",
+  "title": "PM SVANidhi (street vendor loan)",
+  "authority": "Ministry of Housing & Urban Affairs",
+  "keywords": "svanidhi street vendor loan working capital hawker फेरीवाला लोन ਰੇਹੜੀ",
+  "summary": "Collateral-free working-capital loan for street vendors starting at Rs 15,000, with larger loans on timely repayment and a digital-payment cash-back. (Unverified seed.)",
+  "benefits": [
+   "Collateral-free working capital loan from Rs 15,000",
+   "Larger loans on timely repayment"
+  ],
+  "rules": {
+   "needs": [
+    "street_vendor"
+   ],
+   "requires": [
+    "street_vendor"
+   ]
+  },
+  "exclusions": [
+   "Only for street vendors with vending proof / recommendation letter"
+  ],
+  "documents": [
+   "Vending certificate / letter of recommendation",
+   "Aadhaar",
+   "Bank account"
+  ],
+  "steps": [
+   "Apply on the portal or at a bank/CSC",
+   "Upload vending proof",
+   "Repay on time to unlock the next loan"
+  ],
+  "apply_url": "https://pmsvanidhi.mohua.gov.in",
+  "how_to_apply": "Apply at pmsvanidhi.mohua.gov.in, a bank branch or CSC.",
+  "channels": [
+   "CSC",
+   "Bank branch",
+   "Urban local body"
+  ],
+  "confirm_officially": true,
+  "sources": [
+   {
+    "title": "PM SVANidhi portal",
+    "url": "https://pmsvanidhi.mohua.gov.in",
+    "authority": "MoHUA",
+    "last_verified": null
+   }
+  ],
+  "source": "https://pmsvanidhi.mohua.gov.in",
+  "last_verified": null,
+  "i18n": {
+   "hi": {
+    "title": "PM स्वनिधि (रेहड़ी-पटरी वालों के लिए ऋण)",
+    "summary": "रेहड़ी-पटरी वालों के लिए बिना गारंटी का कार्यशील पूँजी ऋण, ₹15,000 से शुरू; समय पर चुकाने पर बड़ा ऋण और डिजिटल भुगतान पर कैश-बैक। (अप्रमाणित प्रारंभिक जानकारी।)",
+    "how_to_apply": "pmsvanidhi.mohua.gov.in पर, बैंक शाखा या CSC में आवेदन करें।"
+   },
+   "pa": {
+    "title": "PM ਸਵਨਿਧੀ (ਰੇਹੜੀ-ਫੜ੍ਹੀ ਵਾਲਿਆਂ ਲਈ ਕਰਜ਼ਾ)",
+    "summary": "ਰੇਹੜੀ-ਫੜ੍ਹੀ ਵਾਲਿਆਂ ਲਈ ਬਿਨਾਂ ਗਾਰੰਟੀ ਦਾ ਕਾਰਜਸ਼ੀਲ ਪੂੰਜੀ ਕਰਜ਼ਾ, ₹15,000 ਤੋਂ ਸ਼ੁਰੂ; ਸਮੇਂ ਸਿਰ ਮੋੜਨ ਤੇ ਵੱਡਾ ਕਰਜ਼ਾ ਅਤੇ ਡਿਜੀਟਲ ਭੁਗਤਾਨ ਤੇ ਕੈਸ਼-ਬੈਕ। (ਅਣ-ਪੁਸ਼ਟੀ ਸ਼ੁਰੂਆਤੀ ਜਾਣਕਾਰੀ।)",
+    "how_to_apply": "pmsvanidhi.mohua.gov.in ਤੇ, ਬੈਂਕ ਸ਼ਾਖਾ ਜਾਂ CSC ਵਿੱਚ ਅਰਜ਼ੀ ਦਿਓ।"
+   }
+  },
+  "last_checked": "unverified seed data - confirm on the official portal"
+ },
+ {
+  "id": "mudra",
+  "kind": "scheme",
+  "title": "PM MUDRA loans",
+  "authority": "MUDRA / Ministry of Finance",
+  "keywords": "mudra loan business shishu kishor tarun small business vehicle मुद्रा ਮੁਦਰਾ",
+  "summary": "Collateral-free small-business loans: Shishu (up to Rs 50,000), Kishore (up to Rs 5 lakh), Tarun (up to Rs 10 lakh), with higher limits for Tarun Plus. Useful for tools or a vehicle instead of a high-interest app loan. (Unverified seed.)",
+  "benefits": [
+   "Collateral-free business loans up to Rs 10 lakh+ (category based)"
+  ],
+  "rules": {
+   "min_age": 18,
+   "needs": [
+    "age"
+   ]
+  },
+  "exclusions": [
+   "Must be for a non-farm income-generating activity"
+  ],
+  "documents": [
+   "Aadhaar",
+   "Address proof",
+   "Business/work proof",
+   "Bank statement"
+  ],
+  "steps": [
+   "Choose Shishu/Kishore/Tarun by loan size",
+   "Apply at a bank/NBFC/MFI or udyamimitra.in"
+  ],
+  "apply_url": "https://www.mudra.org.in",
+  "how_to_apply": "Apply at any bank, NBFC or MFI, or at udyamimitra.in.",
+  "channels": [
+   "Bank branch",
+   "CSC"
+  ],
+  "confirm_officially": true,
+  "sources": [
+   {
+    "title": "MUDRA",
+    "url": "https://www.mudra.org.in",
+    "authority": "MUDRA",
+    "last_verified": null
+   }
+  ],
+  "source": "https://www.mudra.org.in",
+  "last_verified": null,
+  "i18n": {
+   "hi": {
+    "title": "PM मुद्रा ऋण",
+    "summary": "बिना गारंटी के छोटे व्यवसाय ऋण: शिशु (₹50,000 तक), किशोर (₹5 लाख तक), तरुण (₹10 लाख तक), तरुण प्लस में और ऊँची सीमा। ऊँचे ब्याज वाले ऐप-लोन की जगह औज़ार या गाड़ी के लिए उपयोगी। (अप्रमाणित प्रारंभिक जानकारी।)",
+    "how_to_apply": "किसी भी बैंक, NBFC या MFI में, या udyamimitra.in पर आवेदन करें।"
+   },
+   "pa": {
+    "title": "PM ਮੁਦਰਾ ਕਰਜ਼ੇ",
+    "summary": "ਬਿਨਾਂ ਗਾਰੰਟੀ ਦੇ ਛੋਟੇ ਕਾਰੋਬਾਰੀ ਕਰਜ਼ੇ: ਸ਼ਿਸ਼ੂ (₹50,000 ਤੱਕ), ਕਿਸ਼ੋਰ (₹5 ਲੱਖ ਤੱਕ), ਤਰੁਣ (₹10 ਲੱਖ ਤੱਕ), ਤਰੁਣ ਪਲੱਸ ਵਿੱਚ ਹੋਰ ਉੱਚੀ ਹੱਦ। ਉੱਚੇ ਵਿਆਜ ਵਾਲੇ ਐਪ-ਲੋਨ ਦੀ ਥਾਂ ਸੰਦਾਂ ਜਾਂ ਗੱਡੀ ਲਈ ਲਾਭਦਾਇਕ। (ਅਣ-ਪੁਸ਼ਟੀ ਸ਼ੁਰੂਆਤੀ ਜਾਣਕਾਰੀ।)",
+    "how_to_apply": "ਕਿਸੇ ਵੀ ਬੈਂਕ, NBFC ਜਾਂ MFI ਵਿੱਚ, ਜਾਂ udyamimitra.in ਤੇ ਅਰਜ਼ੀ ਦਿਓ।"
+   }
+  },
+  "last_checked": "unverified seed data - confirm on the official portal"
+ },
+ {
+  "id": "bocw",
+  "kind": "scheme",
+  "title": "Construction workers welfare board (BOCW) registration",
+  "authority": "State Building & Other Construction Workers Welfare Board",
+  "keywords": "construction worker bocw welfare board mason labour cess building निर्माण मजदूर ਉਸਾਰੀ ਕਾਮੇ",
+  "summary": "Construction workers aged 18-60 who worked at least 90 days in the last 12 months can usually register with their state welfare board for benefits such as accident, medical, education and maternity assistance. Benefits and process differ by state. (Unverified seed - confirm with your state board.)",
+  "benefits": [
+   "State-specific: accident, medical, education, maternity, pension assistance"
+  ],
+  "rules": {
+   "min_age": 18,
+   "max_age": 60,
+   "work_types": [
+    "construction"
+   ],
+   "needs": [
+    "age",
+    "work_type"
+   ]
+  },
+  "exclusions": [
+   "Must have worked about 90 days in the last 12 months as a building/construction worker"
+  ],
+  "documents": [
+   "Aadhaar",
+   "Proof of 90 days' work (contractor certificate)",
+   "Bank account",
+   "Photos"
+  ],
+  "steps": [
+   "Get a 90-day work certificate from your contractor/union",
+   "Apply at the state labour department / welfare board office or CSC"
+  ],
+  "apply_url": "https://labour.gov.in",
+  "how_to_apply": "Contact your state construction workers welfare board / labour department, or a CSC.",
+  "channels": [
+   "State labour department",
+   "CSC"
+  ],
+  "confirm_officially": true,
+  "sources": [
+   {
+    "title": "Ministry of Labour & Employment",
+    "url": "https://labour.gov.in",
+    "authority": "Ministry of Labour & Employment",
+    "last_verified": null
+   }
+  ],
+  "source": "https://labour.gov.in",
+  "last_verified": null,
+  "i18n": {
+   "hi": {
+    "title": "निर्माण श्रमिक कल्याण बोर्ड (BOCW) पंजीकरण",
+    "summary": "18-60 वर्ष के निर्माण श्रमिक, जिन्होंने पिछले 12 महीनों में कम से कम 90 दिन काम किया हो, आमतौर पर अपने राज्य के कल्याण बोर्ड में दुर्घटना, चिकित्सा, शिक्षा और मातृत्व सहायता जैसे लाभ के लिए पंजीकरण कर सकते हैं। लाभ और प्रक्रिया राज्य के अनुसार अलग हैं। (अप्रमाणित प्रारंभिक जानकारी - अपने राज्य बोर्ड से पुष्टि करें।)",
+    "how_to_apply": "अपने राज्य के निर्माण श्रमिक कल्याण बोर्ड / श्रम विभाग या CSC से संपर्क करें।"
+   },
+   "pa": {
+    "title": "ਉਸਾਰੀ ਕਾਮੇ ਭਲਾਈ ਬੋਰਡ (BOCW) ਰਜਿਸਟ੍ਰੇਸ਼ਨ",
+    "summary": "18-60 ਸਾਲ ਦੇ ਉਸਾਰੀ ਕਾਮੇ, ਜਿਨ੍ਹਾਂ ਨੇ ਪਿਛਲੇ 12 ਮਹੀਨਿਆਂ ਵਿੱਚ ਘੱਟੋ-ਘੱਟ 90 ਦਿਨ ਕੰਮ ਕੀਤਾ ਹੋਵੇ, ਆਮ ਤੌਰ ਤੇ ਆਪਣੇ ਰਾਜ ਦੇ ਭਲਾਈ ਬੋਰਡ ਵਿੱਚ ਹਾਦਸਾ, ਇਲਾਜ, ਪੜ੍ਹਾਈ ਅਤੇ ਜਣੇਪਾ ਸਹਾਇਤਾ ਵਰਗੇ ਲਾਭਾਂ ਲਈ ਰਜਿਸਟਰ ਕਰ ਸਕਦੇ ਹਨ। ਲਾਭ ਅਤੇ ਪ੍ਰਕਿਰਿਆ ਰਾਜ ਅਨੁਸਾਰ ਵੱਖ-ਵੱਖ ਹਨ। (ਅਣ-ਪੁਸ਼ਟੀ ਸ਼ੁਰੂਆਤੀ ਜਾਣਕਾਰੀ - ਆਪਣੇ ਰਾਜ ਬੋਰਡ ਤੋਂ ਪੁਸ਼ਟੀ ਕਰੋ।)",
+    "how_to_apply": "ਆਪਣੇ ਰਾਜ ਦੇ ਉਸਾਰੀ ਕਾਮੇ ਭਲਾਈ ਬੋਰਡ / ਕਿਰਤ ਵਿਭਾਗ ਜਾਂ CSC ਨਾਲ ਸੰਪਰਕ ਕਰੋ।"
+   }
+  },
+  "last_checked": "unverified seed data - confirm on the official portal"
+ },
+ {
+  "id": "social_security_code",
+  "kind": "scheme",
+  "title": "Code on Social Security 2020 - gig and platform workers",
+  "authority": "Ministry of Labour & Employment",
+  "keywords": "code social security gig worker platform aggregator welfare fund rights law rules 2026 सामाजिक सुरक्षा संहिता ਸਮਾਜਿਕ ਸੁਰੱਖਿਆ",
+  "summary": "The Code came into force on 21 Nov 2025 and extends social security to gig and platform workers. The Social Security (Central) Rules, 2026 were notified in May 2026. Aggregators must contribute 1-2% of annual turnover (capped at 5% of payouts to workers) and upload worker details within 45 days. A contribution rate and start date were not confirmed in the sources checked, so actual benefits may not have started - register on e-Shram and watch official notices.",
+  "benefits": [
+   "Legal recognition of gig/platform workers",
+   "Aggregator-funded social security fund (rate and start date not confirmed)"
+  ],
+  "rules": {
+   "needs": []
+  },
+  "exclusions": [
+   "Benefits depend on notified schemes - not yet confirmed as paying out"
+  ],
+  "documents": [],
+  "steps": [
+   "Register on e-Shram (self-declaration)",
+   "Ask your platform whether it has uploaded your details",
+   "Check labour.gov.in for notified schemes"
+  ],
+  "apply_url": "https://eshram.gov.in",
+  "how_to_apply": "Register on e-Shram so you are counted when schemes roll out.",
+  "channels": [
+   "e-Shram helpline 14434"
+  ],
+  "confirm_officially": true,
+  "sources": [
+   {
+    "title": "Labour codes / Social Security (Central) Rules 2026 (news and legal summaries)",
+    "url": "https://www.impriindia.com/?p=75715",
+    "authority": "Secondary source - verify on labour.gov.in",
+    "last_verified": "2026-10-17"
+   },
+   {
+    "title": "Ministry of Labour & Employment",
+    "url": "https://labour.gov.in",
+    "authority": "Ministry of Labour & Employment",
+    "last_verified": null
+   }
+  ],
+  "source": "https://labour.gov.in",
+  "last_verified": "2026-10-17",
+  "i18n": {
+   "hi": {
+    "title": "सामाजिक सुरक्षा संहिता 2020 - गिग और प्लेटफ़ॉर्म कामगार",
+    "summary": "संहिता 21 नवंबर 2025 से लागू हुई और गिग व प्लेटफ़ॉर्म कामगारों तक सामाजिक सुरक्षा बढ़ाती है। सामाजिक सुरक्षा (केंद्रीय) नियम, 2026 मई 2026 में अधिसूचित हुए। एग्रीगेटर को वार्षिक टर्नओवर का 1-2% (कामगारों को भुगतान के 5% तक सीमित) देना है और 45 दिन में कामगारों का ब्योरा अपलोड करना है। जाँचे गए स्रोतों में अंशदान दर और शुरू होने की तारीख की पुष्टि नहीं मिली, इसलिए लाभ अभी शुरू न हुए हों - e-Shram पर पंजीकरण करें और सरकारी सूचनाएँ देखते रहें।",
+    "how_to_apply": "e-Shram पर पंजीकरण करें ताकि योजनाएँ शुरू होने पर आपकी गिनती हो।"
+   },
+   "pa": {
+    "title": "ਸਮਾਜਿਕ ਸੁਰੱਖਿਆ ਕੋਡ 2020 - ਗਿਗ ਅਤੇ ਪਲੇਟਫਾਰਮ ਕਾਮੇ",
+    "summary": "ਕੋਡ 21 ਨਵੰਬਰ 2025 ਤੋਂ ਲਾਗੂ ਹੋਇਆ ਅਤੇ ਗਿਗ ਤੇ ਪਲੇਟਫਾਰਮ ਕਾਮਿਆਂ ਤੱਕ ਸਮਾਜਿਕ ਸੁਰੱਖਿਆ ਵਧਾਉਂਦਾ ਹੈ। ਸਮਾਜਿਕ ਸੁਰੱਖਿਆ (ਕੇਂਦਰੀ) ਨਿਯਮ, 2026 ਮਈ 2026 ਵਿੱਚ ਨੋਟੀਫਾਈ ਹੋਏ। ਐਗਰੀਗੇਟਰ ਨੂੰ ਸਾਲਾਨਾ ਟਰਨਓਵਰ ਦਾ 1-2% (ਕਾਮਿਆਂ ਨੂੰ ਭੁਗਤਾਨ ਦੇ 5% ਤੱਕ ਸੀਮਤ) ਦੇਣਾ ਹੈ ਅਤੇ 45 ਦਿਨਾਂ ਵਿੱਚ ਕਾਮਿਆਂ ਦਾ ਵੇਰਵਾ ਅੱਪਲੋਡ ਕਰਨਾ ਹੈ। ਜਾਂਚੇ ਸਰੋਤਾਂ ਵਿੱਚ ਯੋਗਦਾਨ ਦਰ ਅਤੇ ਸ਼ੁਰੂ ਹੋਣ ਦੀ ਤਾਰੀਖ ਦੀ ਪੁਸ਼ਟੀ ਨਹੀਂ ਮਿਲੀ, ਇਸ ਲਈ ਲਾਭ ਅਜੇ ਸ਼ੁਰੂ ਨਾ ਹੋਏ ਹੋਣ - e-Shram ਤੇ ਰਜਿਸਟਰ ਕਰੋ ਅਤੇ ਸਰਕਾਰੀ ਸੂਚਨਾਵਾਂ ਦੇਖਦੇ ਰਹੋ।",
+    "how_to_apply": "e-Shram ਤੇ ਰਜਿਸਟਰ ਕਰੋ ਤਾਂ ਜੋ ਯੋਜਨਾਵਾਂ ਸ਼ੁਰੂ ਹੋਣ ਤੇ ਤੁਹਾਡੀ ਗਿਣਤੀ ਹੋਵੇ।"
+   }
+  },
+  "last_checked": "verified 2026-10-17"
+ },
+ {
+  "id": "state_gig_laws",
+  "kind": "scheme",
+  "title": "State gig-worker welfare laws and boards",
+  "authority": "State labour departments",
+  "keywords": "rajasthan karnataka bihar telangana jharkhand state gig worker welfare board law cess registration राजस्थान कर्नाटक ਸੂਬਾ",
+  "summary": "Some states have their own platform-worker laws: Rajasthan (2023, welfare board), Karnataka (ordinance 2025; rules were still being finalised) and Bihar (2025); Telangana and Jharkhand have drafts. No Punjab-specific gig-worker scheme was found in our check - ask the Punjab labour department. Rules differ by state.",
+  "benefits": [
+   "Registration, welfare board and grievance mechanism (state-specific)"
+  ],
+  "rules": {
+   "states": [
+    "rajasthan",
+    "karnataka",
+    "bihar"
+   ],
+   "needs": [
+    "state"
+   ]
+  },
+  "exclusions": [
+   "Only applies where your state has notified a law/scheme"
+  ],
+  "documents": [
+   "Aadhaar",
+   "Platform ID / payout proof"
+  ],
+  "steps": [
+   "Contact your state labour department or welfare board",
+   "Ask about gig-worker registration and ID"
+  ],
+  "apply_url": "https://labour.gov.in",
+  "how_to_apply": "Contact your state labour department / welfare board office or a CSC.",
+  "channels": [
+   "State labour department",
+   "CSC"
+  ],
+  "confirm_officially": true,
+  "sources": [
+   {
+    "title": "PRS: Karnataka platform-based gig workers bill/ordinance",
+    "url": "https://prsindia.org/bills/states/the-karnataka-platform-based-gig-workers-social-security-and-welfare-bill-2025",
+    "authority": "PRS Legislative Research (secondary source)",
+    "last_verified": "2026-10-17"
+   }
+  ],
+  "source": "https://labour.gov.in",
+  "last_verified": "2026-10-17",
+  "i18n": {
+   "hi": {
+    "title": "राज्य के गिग-कामगार कल्याण कानून और बोर्ड",
+    "summary": "कुछ राज्यों के अपने प्लेटफ़ॉर्म-कामगार कानून हैं: राजस्थान (2023, कल्याण बोर्ड), कर्नाटक (2025 अध्यादेश; नियम तय हो रहे थे) और बिहार (2025); तेलंगाना और झारखंड में मसौदे हैं। हमारी जाँच में पंजाब की कोई अलग गिग-कामगार योजना नहीं मिली - पंजाब श्रम विभाग से पूछें। नियम राज्य के अनुसार अलग हैं।",
+    "how_to_apply": "अपने राज्य के श्रम विभाग / कल्याण बोर्ड कार्यालय या CSC से संपर्क करें।"
+   },
+   "pa": {
+    "title": "ਰਾਜਾਂ ਦੇ ਗਿਗ-ਕਾਮਿਆਂ ਲਈ ਭਲਾਈ ਕਾਨੂੰਨ ਅਤੇ ਬੋਰਡ",
+    "summary": "ਕੁਝ ਰਾਜਾਂ ਦੇ ਆਪਣੇ ਪਲੇਟਫਾਰਮ-ਕਾਮਿਆਂ ਦੇ ਕਾਨੂੰਨ ਹਨ: ਰਾਜਸਥਾਨ (2023, ਭਲਾਈ ਬੋਰਡ), ਕਰਨਾਟਕ (2025 ਆਰਡੀਨੈਂਸ; ਨਿਯਮ ਤੈਅ ਹੋ ਰਹੇ ਸਨ) ਅਤੇ ਬਿਹਾਰ (2025); ਤੇਲੰਗਾਨਾ ਅਤੇ ਝਾਰਖੰਡ ਵਿੱਚ ਖਰੜੇ ਹਨ। ਸਾਡੀ ਜਾਂਚ ਵਿੱਚ ਪੰਜਾਬ ਦੀ ਕੋਈ ਵੱਖਰੀ ਗਿਗ-ਕਾਮਾ ਯੋਜਨਾ ਨਹੀਂ ਮਿਲੀ - ਪੰਜਾਬ ਕਿਰਤ ਵਿਭਾਗ ਤੋਂ ਪੁੱਛੋ। ਨਿਯਮ ਰਾਜ ਅਨੁਸਾਰ ਵੱਖ-ਵੱਖ ਹਨ।",
+    "how_to_apply": "ਆਪਣੇ ਰਾਜ ਦੇ ਕਿਰਤ ਵਿਭਾਗ / ਭਲਾਈ ਬੋਰਡ ਦਫ਼ਤਰ ਜਾਂ CSC ਨਾਲ ਸੰਪਰਕ ਕਰੋ।"
+   }
+  },
+  "last_checked": "verified 2026-10-17"
+ },
+ {
+  "id": "pmkvy",
+  "kind": "scheme",
+  "title": "Free skill training (Skill India / PMKVY)",
+  "authority": "Ministry of Skill Development & Entrepreneurship",
+  "keywords": "skill training course free certificate upskill driver electrician learn PMKVY कौशल ਹੁਨਰ ਸਿਖਲਾਈ",
+  "summary": "Short free or subsidised training with certificates in trades such as driving, electrician, plumbing, beauty and healthcare assistance. Certified skills help you move to higher-paid work. (Unverified seed - course availability varies.)",
+  "benefits": [
+   "Free/subsidised certified training"
+  ],
+  "rules": {
+   "min_age": 15,
+   "needs": [
+    "age"
+   ]
+  },
+  "exclusions": [
+   "Course availability and eligibility vary by centre"
+  ],
+  "documents": [
+   "Aadhaar",
+   "Bank account",
+   "Education proof (if any)"
+  ],
+  "steps": [
+   "Search courses on Skill India Digital",
+   "Pick a nearby training centre",
+   "Enrol with Aadhaar"
+  ],
+  "apply_url": "https://www.skillindiadigital.gov.in",
+  "how_to_apply": "Find a centre at skillindiadigital.gov.in or the nearest training centre.",
+  "channels": [
+   "Training centre",
+   "CSC"
+  ],
+  "confirm_officially": false,
+  "sources": [
+   {
+    "title": "Skill India Digital",
+    "url": "https://www.skillindiadigital.gov.in",
+    "authority": "MSDE",
+    "last_verified": null
+   }
+  ],
+  "source": "https://www.skillindiadigital.gov.in",
+  "last_verified": null,
+  "i18n": {
+   "hi": {
+    "title": "मुफ़्त कौशल प्रशिक्षण (स्किल इंडिया / PMKVY)",
+    "summary": "ड्राइविंग, इलेक्ट्रीशियन, प्लंबिंग, ब्यूटी और स्वास्थ्य सहायक जैसे कामों में प्रमाणपत्र के साथ छोटे मुफ़्त या रियायती प्रशिक्षण। प्रमाणित कौशल से ज़्यादा कमाई वाले काम में जाने में मदद मिलती है। (अप्रमाणित प्रारंभिक जानकारी - कोर्स केंद्र के अनुसार बदलते हैं।)",
+    "how_to_apply": "skillindiadigital.gov.in पर या नज़दीकी प्रशिक्षण केंद्र में केंद्र खोजें।"
+   },
+   "pa": {
+    "title": "ਮੁਫ਼ਤ ਹੁਨਰ ਸਿਖਲਾਈ (ਸਕਿੱਲ ਇੰਡੀਆ / PMKVY)",
+    "summary": "ਡਰਾਈਵਿੰਗ, ਇਲੈਕਟ੍ਰੀਸ਼ੀਅਨ, ਪਲੰਬਿੰਗ, ਬਿਊਟੀ ਅਤੇ ਸਿਹਤ ਸਹਾਇਕ ਵਰਗੇ ਕੰਮਾਂ ਵਿੱਚ ਸਰਟੀਫਿਕੇਟ ਸਮੇਤ ਛੋਟੀ ਮੁਫ਼ਤ ਜਾਂ ਰਿਆਇਤੀ ਸਿਖਲਾਈ। ਪ੍ਰਮਾਣਿਤ ਹੁਨਰ ਨਾਲ ਵੱਧ ਕਮਾਈ ਵਾਲੇ ਕੰਮ ਵਿੱਚ ਜਾਣ ਵਿੱਚ ਮਦਦ ਮਿਲਦੀ ਹੈ। (ਅਣ-ਪੁਸ਼ਟੀ ਸ਼ੁਰੂਆਤੀ ਜਾਣਕਾਰੀ - ਕੋਰਸ ਕੇਂਦਰ ਅਨੁਸਾਰ ਬਦਲਦੇ ਹਨ।)",
+    "how_to_apply": "skillindiadigital.gov.in ਤੇ ਜਾਂ ਨੇੜਲੇ ਸਿਖਲਾਈ ਕੇਂਦਰ ਵਿੱਚ ਕੇਂਦਰ ਲੱਭੋ।"
+   }
+  },
+  "last_checked": "unverified seed data - confirm on the official portal"
+ },
+ {
+  "id": "nalsa",
+  "kind": "info",
+  "title": "Free legal aid (NALSA / DLSA)",
+  "authority": "NALSA",
+  "keywords": "legal aid lawyer free court nalsa 15100 dlsa dispute वकील कानूनी सहायता ਕਾਨੂੰਨੀ ਸਹਾਇਤਾ",
+  "summary": "Free legal services for eligible people including workers with low income, women and SC/ST. Call 15100 or visit the District Legal Services Authority.",
+  "documents": [
+   "ID proof",
+   "Income proof (if asked)"
+  ],
+  "how_to_apply": "Call 15100 or visit nalsa.gov.in / the district court's DLSA office.",
+  "source": "https://nalsa.gov.in",
+  "last_verified": null,
+  "sources": [
+   {
     "title": "Free legal aid (NALSA / DLSA)",
-    "keywords": "legal aid lawyer free court nalsa 15100 dlsa dispute वकील कानूनी सहायता",
-    "summary": "Free legal services for eligible people including workers with low income, women and SC/ST. Call 15100 or visit the District Legal Services Authority.",
-    "documents": ["ID proof", "Income proof (if asked)"],
-    "how_to_apply": "Call 15100 or visit nalsa.gov.in / the district court's DLSA office.",
-    "source": "https://nalsa.gov.in",
-    "last_checked": "seed data - confirm on the official portal"
+    "url": "https://nalsa.gov.in",
+    "authority": "NALSA",
+    "last_verified": null
+   }
+  ],
+  "confirm_officially": true,
+  "i18n": {
+   "hi": {
+    "title": "मुफ़्त कानूनी सहायता (NALSA / DLSA)",
+    "summary": "कम आय वाले कामगारों, महिलाओं और SC/ST सहित पात्र लोगों के लिए मुफ़्त कानूनी सेवा। 15100 पर कॉल करें या ज़िला विधिक सेवा प्राधिकरण जाएँ।",
+    "how_to_apply": "15100 पर कॉल करें या nalsa.gov.in / ज़िला अदालत के DLSA कार्यालय जाएँ।"
+   },
+   "pa": {
+    "title": "ਮੁਫ਼ਤ ਕਾਨੂੰਨੀ ਸਹਾਇਤਾ (NALSA / DLSA)",
+    "summary": "ਘੱਟ ਆਮਦਨ ਵਾਲੇ ਕਾਮਿਆਂ, ਔਰਤਾਂ ਅਤੇ SC/ST ਸਮੇਤ ਯੋਗ ਲੋਕਾਂ ਲਈ ਮੁਫ਼ਤ ਕਾਨੂੰਨੀ ਸੇਵਾ। 15100 ਤੇ ਕਾਲ ਕਰੋ ਜਾਂ ਜ਼ਿਲ੍ਹਾ ਕਾਨੂੰਨੀ ਸੇਵਾਵਾਂ ਅਥਾਰਟੀ ਜਾਓ।",
+    "how_to_apply": "15100 ਤੇ ਕਾਲ ਕਰੋ ਜਾਂ nalsa.gov.in / ਜ਼ਿਲ੍ਹਾ ਅਦਾਲਤ ਦੇ DLSA ਦਫ਼ਤਰ ਜਾਓ।"
+   }
   },
-  {
-    "id": "unpaid_wages",
+  "last_checked": "unverified seed data - confirm on the official portal"
+ },
+ {
+  "id": "unpaid_wages",
+  "kind": "info",
+  "title": "Unpaid wages - your rights",
+  "authority": "Ministry of Labour & Employment",
+  "keywords": "unpaid wages salary due contractor minimum wage labour commissioner payment मजदूरी बकाया ਬਕਾਇਆ ਮਜ਼ਦੂਰੀ",
+  "summary": "Employers must pay at least the state minimum wage on time. If wages are unpaid, keep a record (wage diary, messages, photos of work), send a written notice, then complain to the Labour Commissioner or Inspector. Under the Code on Wages, 2019 delayed or unpaid wages are an offence.",
+  "documents": [
+   "Wage diary / messages / payment proofs",
+   "ID proof"
+  ],
+  "how_to_apply": "Written notice first, then a complaint at the district Labour Office.",
+  "source": "https://labour.gov.in",
+  "last_verified": null,
+  "sources": [
+   {
     "title": "Unpaid wages - your rights",
-    "keywords": "unpaid wages salary due contractor minimum wage labour commissioner payment मजदूरी बकाया",
-    "summary": "Employers must pay at least the state minimum wage on time. If wages are unpaid, keep a record (wage diary, messages, photos of work), send a written notice, then complain to the Labour Commissioner or Inspector. Under the Code on Wages, 2019 delayed or unpaid wages are an offence.",
-    "documents": ["Wage diary / messages / payment proofs", "ID proof"],
-    "how_to_apply": "Written notice first, then a complaint at the district Labour Office.",
-    "source": "https://labour.gov.in",
-    "last_checked": "seed data - confirm on the official portal"
+    "url": "https://labour.gov.in",
+    "authority": "Ministry of Labour & Employment",
+    "last_verified": null
+   }
+  ],
+  "confirm_officially": true,
+  "i18n": {
+   "hi": {
+    "title": "बकाया मज़दूरी - आपके अधिकार",
+    "summary": "नियोक्ता को कम से कम राज्य की न्यूनतम मज़दूरी समय पर देनी होती है। मज़दूरी न मिले तो रिकॉर्ड रखें (मज़दूरी डायरी, मैसेज, काम की फ़ोटो), लिखित नोटिस भेजें, फिर श्रम आयुक्त या निरीक्षक से शिकायत करें। वेतन संहिता, 2019 के तहत देर से या न दी गई मज़दूरी अपराध है।",
+    "how_to_apply": "पहले लिखित नोटिस, फिर ज़िला श्रम कार्यालय में शिकायत।"
+   },
+   "pa": {
+    "title": "ਬਕਾਇਆ ਮਜ਼ਦੂਰੀ - ਤੁਹਾਡੇ ਹੱਕ",
+    "summary": "ਮਾਲਕ ਨੂੰ ਘੱਟੋ-ਘੱਟ ਰਾਜ ਦੀ ਘੱਟੋ-ਘੱਟ ਮਜ਼ਦੂਰੀ ਸਮੇਂ ਸਿਰ ਦੇਣੀ ਪੈਂਦੀ ਹੈ। ਮਜ਼ਦੂਰੀ ਨਾ ਮਿਲੇ ਤਾਂ ਰਿਕਾਰਡ ਰੱਖੋ (ਮਜ਼ਦੂਰੀ ਡਾਇਰੀ, ਸੁਨੇਹੇ, ਕੰਮ ਦੀਆਂ ਫੋਟੋਆਂ), ਲਿਖਤੀ ਨੋਟਿਸ ਭੇਜੋ, ਫਿਰ ਕਿਰਤ ਕਮਿਸ਼ਨਰ ਜਾਂ ਇੰਸਪੈਕਟਰ ਕੋਲ ਸ਼ਿਕਾਇਤ ਕਰੋ। ਵੇਤਨ ਕੋਡ, 2019 ਤਹਿਤ ਦੇਰ ਨਾਲ ਜਾਂ ਨਾ ਦਿੱਤੀ ਮਜ਼ਦੂਰੀ ਜੁਰਮ ਹੈ।",
+    "how_to_apply": "ਪਹਿਲਾਂ ਲਿਖਤੀ ਨੋਟਿਸ, ਫਿਰ ਜ਼ਿਲ੍ਹਾ ਕਿਰਤ ਦਫ਼ਤਰ ਵਿੱਚ ਸ਼ਿਕਾਇਤ।"
+   }
   },
-  {
-    "id": "pmkvy",
-    "title": "Free skill training (Skill India / PMKVY)",
-    "keywords": "skill training course free certificate upskill driver electrician learn PMKVY कौशल",
-    "summary": "Short free or subsidised training with certificates in trades such as driving, electrician, plumbing, beauty and healthcare assistance. Certified skills help you move to higher-paid work.",
-    "documents": ["Aadhaar", "Bank account", "Education proof (if any)"],
-    "how_to_apply": "Find a centre at skillindiadigital.gov.in or the nearest training centre.",
-    "source": "https://www.skillindiadigital.gov.in",
-    "last_checked": "seed data - confirm on the official portal"
-  },
-  {
-    "id": "women_safety",
+  "last_checked": "unverified seed data - confirm on the official portal"
+ },
+ {
+  "id": "women_safety",
+  "kind": "info",
+  "title": "Safety help for women workers",
+  "authority": "Ministry of Women & Child Development",
+  "keywords": "women safety harassment night ride helpline 181 POSH complaint महिला सुरक्षा ਔਰਤਾਂ ਸੁਰੱਖਿਆ",
+  "summary": "Call 181 (women helpline) or 112 in danger. Share live location with a trusted contact before trips, avoid isolated drop-offs at night and report the booking to the platform. Harassment at work can be reported to an Internal or Local Committee under the POSH Act.",
+  "documents": [],
+  "how_to_apply": "Call 181 / 112; for work harassment contact the District Local Committee.",
+  "source": "https://wcd.nic.in",
+  "last_verified": null,
+  "sources": [
+   {
     "title": "Safety help for women workers",
-    "keywords": "women safety harassment night ride helpline 181 POSH complaint महिला सुरक्षा",
-    "summary": "Call 181 (women helpline) or 112 in danger. Share live location with a trusted contact before trips, avoid isolated drop-offs at night and report the booking to the platform. Harassment at work can be reported to an Internal or Local Committee under the POSH Act.",
-    "documents": [],
-    "how_to_apply": "Call 181 / 112; for work harassment contact the District Local Committee.",
-    "source": "https://wcd.nic.in",
-    "last_checked": "seed data - confirm on the official portal"
+    "url": "https://wcd.nic.in",
+    "authority": "Ministry of Women & Child Development",
+    "last_verified": null
+   }
+  ],
+  "confirm_officially": true,
+  "i18n": {
+   "hi": {
+    "title": "महिला कामगारों के लिए सुरक्षा मदद",
+    "summary": "खतरे में 181 (महिला हेल्पलाइन) या 112 पर कॉल करें। सफ़र से पहले लाइव लोकेशन भरोसेमंद व्यक्ति को भेजें, रात में सुनसान जगह ड्रॉप से बचें और बुकिंग की शिकायत प्लेटफ़ॉर्म को करें। कार्यस्थल पर उत्पीड़न की शिकायत POSH अधिनियम के तहत आंतरिक या स्थानीय समिति में कर सकते हैं।",
+    "how_to_apply": "181 / 112 पर कॉल करें; कार्यस्थल उत्पीड़न के लिए ज़िला स्थानीय समिति से संपर्क करें।"
+   },
+   "pa": {
+    "title": "ਮਹਿਲਾ ਕਾਮਿਆਂ ਲਈ ਸੁਰੱਖਿਆ ਮਦਦ",
+    "summary": "ਖ਼ਤਰੇ ਵਿੱਚ 181 (ਮਹਿਲਾ ਹੈਲਪਲਾਈਨ) ਜਾਂ 112 ਤੇ ਕਾਲ ਕਰੋ। ਸਫ਼ਰ ਤੋਂ ਪਹਿਲਾਂ ਲਾਈਵ ਲੋਕੇਸ਼ਨ ਭਰੋਸੇਮੰਦ ਨੂੰ ਭੇਜੋ, ਰਾਤ ਨੂੰ ਸੁੰਨਸਾਨ ਥਾਂ ਡ੍ਰਾਪ ਤੋਂ ਬਚੋ ਅਤੇ ਬੁਕਿੰਗ ਦੀ ਸ਼ਿਕਾਇਤ ਪਲੇਟਫਾਰਮ ਨੂੰ ਕਰੋ। ਕੰਮ ਵਾਲੀ ਥਾਂ ਤੇ ਪਰੇਸ਼ਾਨੀ ਦੀ ਸ਼ਿਕਾਇਤ POSH ਐਕਟ ਤਹਿਤ ਅੰਦਰੂਨੀ ਜਾਂ ਸਥਾਨਕ ਕਮੇਟੀ ਨੂੰ ਕਰ ਸਕਦੇ ਹੋ।",
+    "how_to_apply": "181 / 112 ਤੇ ਕਾਲ ਕਰੋ; ਕੰਮ ਵਾਲੀ ਥਾਂ ਦੀ ਪਰੇਸ਼ਾਨੀ ਲਈ ਜ਼ਿਲ੍ਹਾ ਸਥਾਨਕ ਕਮੇਟੀ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।"
+   }
   },
-  {
-    "id": "accident_first_hour",
+  "last_checked": "unverified seed data - confirm on the official portal"
+ },
+ {
+  "id": "accident_first_hour",
+  "kind": "info",
+  "title": "Accident - first hour guide",
+  "authority": "Ministry of Road Transport & Highways",
+  "keywords": "accident crash injury insurance claim first aid hospital FIR दुर्घटना बीमा ਹਾਦਸਾ ਬੀਮਾ ਕਲੇਮ",
+  "summary": "1) Move to safety and call 112/108. 2) Do not move a badly hurt person. 3) Photograph the scene, vehicle and injuries. 4) Note witness numbers. 5) File an FIR / get a police report. 6) Inform your insurer and the platform within 24 hours and keep hospital bills for the claim.",
+  "documents": [
+   "Driving licence",
+   "RC",
+   "Insurance policy",
+   "FIR copy",
+   "Hospital bills"
+  ],
+  "how_to_apply": "Call the insurer's claim helpline; ask the hospital for discharge summary and bills.",
+  "source": "https://morth.nic.in",
+  "last_verified": null,
+  "sources": [
+   {
     "title": "Accident - first hour guide",
-    "keywords": "accident crash injury insurance claim first aid hospital FIR दुर्घटना बीमा",
-    "summary": "1) Move to safety and call 112/108. 2) Do not move a badly hurt person. 3) Photograph the scene, vehicle and injuries. 4) Note witness numbers. 5) File an FIR / get a police report. 6) Inform your insurer and the platform within 24 hours and keep hospital bills for the claim.",
-    "documents": ["Driving licence", "RC", "Insurance policy", "FIR copy", "Hospital bills"],
-    "how_to_apply": "Call the insurer's claim helpline; ask the hospital for discharge summary and bills.",
-    "source": "https://morth.nic.in",
-    "last_checked": "seed data - confirm with your insurer"
-  }
+    "url": "https://morth.nic.in",
+    "authority": "Ministry of Road Transport & Highways",
+    "last_verified": null
+   }
+  ],
+  "confirm_officially": true,
+  "i18n": {
+   "hi": {
+    "title": "दुर्घटना - पहला घंटा गाइड",
+    "summary": "1) सुरक्षित जगह जाएँ और 112/108 पर कॉल करें। 2) गंभीर घायल को न हिलाएँ। 3) जगह, गाड़ी और चोटों की फ़ोटो लें। 4) गवाहों के नंबर लिखें। 5) FIR दर्ज कराएँ / पुलिस रिपोर्ट लें। 6) 24 घंटे में बीमा कंपनी और प्लेटफ़ॉर्म को बताएँ और क्लेम के लिए अस्पताल के बिल रखें।",
+    "how_to_apply": "बीमा कंपनी की क्लेम हेल्पलाइन पर कॉल करें; अस्पताल से डिस्चार्ज सारांश और बिल माँगें।"
+   },
+   "pa": {
+    "title": "ਹਾਦਸਾ - ਪਹਿਲਾ ਘੰਟਾ ਗਾਈਡ",
+    "summary": "1) ਸੁਰੱਖਿਅਤ ਥਾਂ ਜਾਓ ਅਤੇ 112/108 ਤੇ ਕਾਲ ਕਰੋ। 2) ਗੰਭੀਰ ਜ਼ਖ਼ਮੀ ਨੂੰ ਨਾ ਹਿਲਾਓ। 3) ਥਾਂ, ਗੱਡੀ ਅਤੇ ਸੱਟਾਂ ਦੀਆਂ ਫੋਟੋਆਂ ਲਓ। 4) ਗਵਾਹਾਂ ਦੇ ਨੰਬਰ ਲਿਖੋ। 5) FIR ਦਰਜ ਕਰਾਓ / ਪੁਲਿਸ ਰਿਪੋਰਟ ਲਓ। 6) 24 ਘੰਟਿਆਂ ਵਿੱਚ ਬੀਮਾ ਕੰਪਨੀ ਅਤੇ ਪਲੇਟਫਾਰਮ ਨੂੰ ਦੱਸੋ ਅਤੇ ਕਲੇਮ ਲਈ ਹਸਪਤਾਲ ਦੇ ਬਿੱਲ ਰੱਖੋ।",
+    "how_to_apply": "ਬੀਮਾ ਕੰਪਨੀ ਦੀ ਕਲੇਮ ਹੈਲਪਲਾਈਨ ਤੇ ਕਾਲ ਕਰੋ; ਹਸਪਤਾਲ ਤੋਂ ਡਿਸਚਾਰਜ ਸਾਰਾਂਸ਼ ਅਤੇ ਬਿੱਲ ਮੰਗੋ।"
+   }
+  },
+  "last_checked": "unverified seed data - confirm on the official portal"
+ }
 ]
