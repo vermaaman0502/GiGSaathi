@@ -6,16 +6,31 @@ export class ApiError extends Error {
   constructor(message: string, public status: number) { super(message); }
 }
 
-async function req<R>(path: string, init?: RequestInit): Promise<R> {
+// Identical GETs fired at the same moment (e.g. the shell and the page both loading the dashboard) share one request.
+const inflight = new Map<string, Promise<unknown>>();
+
+function req<R>(path: string, init?: RequestInit): Promise<R> {
+  if (init?.method && init.method !== "GET") return send<R>(path, init);
+  const hit = inflight.get(path);
+  if (hit) return hit as Promise<R>;
+  const p = send<R>(path, init).finally(() => inflight.delete(path));
+  inflight.set(path, p);
+  return p;
+}
+
+async function send<R>(path: string, init?: RequestInit): Promise<R> {
   let res: Response;
   try {
-    res = await fetch(API + path, { ...init, headers: { "content-type": "application/json", ...(init?.headers || {}) } });
+    // only requests with a JSON body declare a content-type: a header-less GET is a "simple" request and skips the CORS preflight
+    const headers = init?.body ? { "content-type": "application/json", ...(init.headers || {}) } : init?.headers;
+    res = await fetch(API + path, { ...init, headers });
   } catch {
     throw new ApiError("offline", 0);
   }
   const body = await res.json().catch(() => ({}));
   if (!res.ok) {
     const d = (body as { detail?: unknown }).detail;
+    if (res.status === 429) throw new ApiError("Too many requests - please wait a moment and try again.", 429);
     throw new ApiError(typeof d === "string" ? d : Array.isArray(d) ? "Please check the highlighted fields" : "Request failed", res.status);
   }
   return body as R;

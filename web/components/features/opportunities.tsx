@@ -27,19 +27,19 @@ export function OpportunityCards() {
         {data.items.map((o) => {
           const Icon = ICON[o.category];
           return (
-            <Card key={o.category}>
+            <Card key={o.category} className="flex flex-col">
               <CardHeader>
                 <div className="flex items-center justify-between"><Badge className="gap-1"><Icon className="size-3" />{label(o.category)}</Badge><Badge variant="outline">{t("opp.effort", "Effort")}: {o.effort}</Badge></div>
                 <CardTitle className="pt-1">{o.title}</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2 text-sm">
+              <CardContent className="flex flex-1 flex-col gap-2 text-sm">
                 <p>{o.why}</p>
                 {o.evidence.length > 0 && <details><summary className="cursor-pointer font-semibold">{t("opp.evidence", "Data used")}</summary><ul className="ml-4 list-disc text-muted-foreground">{o.evidence.map((e, i) => <li key={i}>{e}</li>)}</ul></details>}
                 <div className="flex flex-wrap items-center gap-2">
                   {o.impact ? <><DataBadge source={o.impact.basis as "estimated"} /><span className="text-xs text-muted-foreground">{o.impact.note}</span></> : <Badge variant="outline">{t("opp.impact.none", "Impact not calculable yet")}</Badge>}
                 </div>
                 <p className="text-xs text-muted-foreground">{conf(o.confidence)}</p>
-                <div className="flex items-center justify-between pt-1"><Button asChild size="sm"><Link href={o.next.href}>{o.next.label}<ArrowRight /></Link></Button><ReadAloud text={`${o.title}. ${o.why}`} /></div>
+                <div className="mt-auto flex flex-wrap items-center justify-between gap-2 pt-2"><Button asChild size="sm" className="h-auto min-h-9 whitespace-normal py-2 text-left"><Link href={o.next.href}>{o.next.label}<ArrowRight /></Link></Button><ReadAloud text={`${o.title}. ${o.why}`} /></div>
               </CardContent>
             </Card>
           );

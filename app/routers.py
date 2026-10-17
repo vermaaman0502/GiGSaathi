@@ -1,8 +1,11 @@
 """v2 API: dashboard, earnings, HaqFinder, documents, NyaySaathi, safety, impact, demo, privacy.
 Identity: an unguessable device token (>=16 chars) acts as a bearer secret until real auth (Supabase) is plugged in.
 Ids starting with 'demo-' are reserved for synthetic demo data."""
+import json
 import re
 from datetime import date
+from functools import lru_cache
+from pathlib import Path
 from typing import Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, Response
@@ -14,6 +17,11 @@ from .services import demo, docsvc, earn, ledger, opps, proof
 from .tools import earnings as et, planner
 
 r = APIRouter(prefix="/api")
+
+
+@lru_cache(maxsize=1)
+def _side_income() -> Dict:
+    return json.loads((Path(__file__).resolve().parent.parent / "data" / "side_income.json").read_text(encoding="utf-8"))
 UID = re.compile(r"^[A-Za-z0-9_-]{8,64}$")
 
 
@@ -94,7 +102,7 @@ class TextIn(BaseModel):
 
 class ImageIn(BaseModel):
     image_b64: str = Field(..., max_length=8_000_000)
-    media_type: str = "image/jpeg"
+    media_type: str = Field("image/jpeg", pattern=r"^image/(jpeg|png|webp|gif)$")
     lang: str = "en"
 
 
@@ -207,9 +215,7 @@ def incentive_progress(b: IncentiveIn):
 
 @r.get("/skills")
 def skills(work_type: str = "delivery"):
-    import json
-    from pathlib import Path
-    data = json.loads((Path(__file__).resolve().parent.parent / "data" / "side_income.json").read_text(encoding="utf-8"))
+    data = _side_income()
     return {"note": data["note"], "ideas": data.get(work_type, []), "resources": data.get("resources", [])}
 
 

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Bars } from "@/components/charts";
 import { Download } from "lucide-react";
 import { useApp } from "@/app/providers";
 import { api } from "@/lib/api";
@@ -110,9 +110,7 @@ export function ShiftTab() {
               <p>{data.note}</p>
               {data.bands.length > 0 && (
                 <div className="h-48" role="img" aria-label={t("shift.chart.alt", "Average net per hour by start time")}>
-                  <ResponsiveContainer width="100%" height="100%"><BarChart data={data.bands.map((b) => ({ ...b, label: `${hh(b.start)}` }))}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} /><XAxis dataKey="label" fontSize={12} /><YAxis fontSize={12} width={40} /><Tooltip formatter={(v) => rupees(Number(v))} />
-                    <Bar dataKey="avg" name={t("shift.avg", "Average ₹/hour")} fill="#166534" radius={[4, 4, 0, 0]} /></BarChart></ResponsiveContainer>
+                  <Bars data={data.bands.map((b) => ({ ...b, label: hh(b.start) }))} xKey="label" series={[{ key: "avg", name: t("shift.avg", "Average ₹/hour"), color: "#16a34a" }]} />
                 </div>
               )}
               <ul className="space-y-1">{data.bands.map((b) => (

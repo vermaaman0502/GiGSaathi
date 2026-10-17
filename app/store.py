@@ -16,6 +16,9 @@ def _db() -> sqlite3.Connection:
     if _conn is None:
         _conn = sqlite3.connect(DB_PATH, check_same_thread=False)
         _conn.row_factory = sqlite3.Row
+        _conn.execute("PRAGMA journal_mode=WAL")       # readers don't block the writer
+        _conn.execute("PRAGMA synchronous=NORMAL")     # safe with WAL, far fewer fsyncs
+        _conn.execute("PRAGMA foreign_keys=ON")
         _conn.executescript(
             """
             CREATE TABLE IF NOT EXISTS entries (
@@ -59,6 +62,10 @@ def _db() -> sqlite3.Connection:
               id INTEGER PRIMARY KEY AUTOINCREMENT, user TEXT NOT NULL, day TEXT NOT NULL, kind TEXT NOT NULL, title TEXT NOT NULL,
               data TEXT NOT NULL DEFAULT '{}', is_demo INTEGER NOT NULL DEFAULT 0
             );
+            CREATE INDEX IF NOT EXISTS ix_wage_user ON wage_diary(user, day);
+            CREATE INDEX IF NOT EXISTS ix_impact_user ON impact(user, day);
+            CREATE INDEX IF NOT EXISTS ix_grievances_user ON grievances(user, updated);
+            CREATE INDEX IF NOT EXISTS ix_evidence_user ON evidence(user, day);
             -- Collective Voice: deliberately has NO user column (anonymous by design).
             CREATE TABLE IF NOT EXISTS reports (
               id INTEGER PRIMARY KEY AUTOINCREMENT,

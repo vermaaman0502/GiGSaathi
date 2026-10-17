@@ -7,9 +7,9 @@ import { cn } from "@/lib/utils";
 export const Skeleton = ({ className }: { className?: string }) => <div aria-hidden className={cn("skeleton h-6 w-full", className)} />;
 
 export function Alert({ variant = "info", title, children, className }: { variant?: "info" | "warning" | "error"; title?: string; children?: React.ReactNode; className?: string }) {
-  const cls = variant === "warning" ? "bg-warning text-warning-foreground border-transparent" : variant === "error" ? "border-destructive text-destructive" : "bg-accent text-accent-foreground border-transparent";
+  const cls = variant === "warning" ? "bg-warning text-warning-foreground border-transparent" : variant === "error" ? "border-destructive/40 bg-destructive/5 text-destructive" : "bg-accent text-accent-foreground border-transparent";
   return (
-    <div role={variant === "error" ? "alert" : "status"} className={cn("flex gap-3 rounded-lg border p-3 text-sm", cls, className)}>
+    <div role={variant === "error" ? "alert" : "status"} className={cn("flex gap-3 rounded-xl border p-3.5 text-sm", cls, className)}>
       {variant === "info" ? <Info className="mt-0.5 size-4 shrink-0" /> : <AlertTriangle className="mt-0.5 size-4 shrink-0" />}
       <div>{title && <p className="font-semibold">{title}</p>}<div>{children}</div></div>
     </div>
@@ -18,10 +18,10 @@ export function Alert({ variant = "info", title, children, className }: { varian
 
 export const Tabs = TabsPrimitive.Root;
 export const TabsList = ({ className, ...p }: React.ComponentProps<typeof TabsPrimitive.List>) => (
-  <TabsPrimitive.List className={cn("flex gap-1 overflow-x-auto rounded-xl bg-secondary p-1", className)} {...p} />
+  <TabsPrimitive.List className={cn("flex gap-1 overflow-x-auto rounded-2xl border bg-muted/60 p-1 [scrollbar-width:none]", className)} {...p} />
 );
 export const TabsTrigger = ({ className, ...p }: React.ComponentProps<typeof TabsPrimitive.Trigger>) => (
-  <TabsPrimitive.Trigger className={cn("shrink-0 rounded-lg px-3 py-2 text-sm font-semibold text-muted-foreground data-[state=active]:bg-card data-[state=active]:text-primary data-[state=active]:shadow-sm", className)} {...p} />
+  <TabsPrimitive.Trigger className={cn("shrink-0 rounded-xl px-3.5 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground data-[state=active]:bg-card data-[state=active]:text-primary data-[state=active]:shadow-card", className)} {...p} />
 );
 export const TabsContent = ({ className, ...p }: React.ComponentProps<typeof TabsPrimitive.Content>) => <TabsPrimitive.Content className={cn("mt-4 space-y-4", className)} {...p} />;
 

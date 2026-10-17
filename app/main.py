@@ -21,10 +21,30 @@ app = FastAPI(title="GigSaathi", version="0.3.0",
 
 
 import os
+from fastapi import Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 
-app.add_middleware(CORSMiddleware, allow_origins=[o for o in os.environ.get("CORS_ORIGINS", "*").split(",") if o], allow_methods=["*"], allow_headers=["*"])
+from . import security
+
+# Only our own frontends may call the API from a browser. Override with CORS_ORIGINS (comma-separated).
+DEFAULT_ORIGINS = ("https://gigsaathi-web.vercel.app,https://gigsaathi.co.in,https://www.gigsaathi.co.in,"
+                   "http://localhost:3000,http://127.0.0.1:3000")
+ORIGINS = [o.strip() for o in os.environ.get("CORS_ORIGINS", DEFAULT_ORIGINS).split(",") if o.strip()]
+
+# Middleware runs outermost-last: CORS wraps everything so even 413/429 responses stay readable by the browser.
+app.middleware("http")(security.harden)
+app.add_middleware(GZipMiddleware, minimum_size=1000)
+app.add_middleware(CORSMiddleware, allow_origins=ORIGINS, allow_origin_regex=os.environ.get("CORS_ORIGIN_REGEX", r"https://gigsaathi-web-[a-z0-9-]+\.vercel\.app"),
+                   allow_methods=["GET", "POST", "PATCH", "DELETE"], allow_headers=["Content-Type"], max_age=600)
 app.include_router(v2_router)
+
+
+@app.exception_handler(Exception)
+async def unhandled(_: Request, __: Exception):
+    # Never leak stack traces or internals to clients.
+    from fastapi.responses import JSONResponse
+    return JSONResponse({"detail": "Something went wrong. Please try again."}, status_code=500)
 
 
 def _hhmm(h: int) -> str:
@@ -37,7 +57,7 @@ class Base(BaseModel):
 
 
 class ChatIn(Base):
-    user: str = Field(..., description="Opaque user id (e.g. hashed phone)")
+    user: str = Field(..., min_length=1, max_length=64, pattern=r"^[A-Za-z0-9_:.+-]+$", description="Opaque user id (e.g. hashed phone)")
     text: str = Field(..., max_length=2000)
     lang: str = "auto"      # "auto" (default): reply in the language the message is written in
     prefer: str = ""        # UI language; used only if the message has no letters
@@ -176,10 +196,18 @@ def chat(b: ChatIn):
 
 
 @app.post("/whatsapp", include_in_schema=False)
-def whatsapp(Body: str = Form(""), From: str = Form("unknown")):
-    """Twilio WhatsApp webhook (form-encoded). Replies in TwiML, language auto-detected."""
+async def whatsapp(request: Request, Body: str = Form("", max_length=2000), From: str = Form("unknown", max_length=64)):
+    """Twilio WhatsApp webhook (form-encoded). Replies in TwiML, language auto-detected.
+    When TWILIO_AUTH_TOKEN is set, requests without a valid X-Twilio-Signature are rejected."""
+    token = os.environ.get("TWILIO_AUTH_TOKEN")
+    if token:
+        form = {k: str(v) for k, v in (await request.form()).items()}
+        url = os.environ.get("TWILIO_WEBHOOK_URL") or str(request.url)
+        if not security.twilio_signature_ok(url, form, request.headers.get("x-twilio-signature", ""), token):
+            raise HTTPException(403, "invalid signature")
     uid = hashlib.sha256(From.encode()).hexdigest()[:16]  # store a hash, not the phone number
-    out = orchestrator.handle(uid, Body, "auto")
+    from starlette.concurrency import run_in_threadpool
+    out = await run_in_threadpool(orchestrator.handle, uid, Body, "auto")   # may call the LLM; keep the event loop free
     xml = f'<?xml version="1.0" encoding="UTF-8"?><Response><Message>{escape(out["reply"])}</Message></Response>'
     return Response(content=xml, media_type="application/xml")
 
@@ -237,7 +265,8 @@ def compare(b: AppsIn):
 
 @app.get("/api/side-income")
 def side_income(work_type: str = "delivery"):
-    data = json.loads((ROOT / "data" / "side_income.json").read_text(encoding="utf-8"))
+    from .routers import _side_income
+    data = _side_income()
     return {"note": data["note"], "ideas": data.get(work_type, [])}
 
 

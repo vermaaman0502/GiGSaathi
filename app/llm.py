@@ -5,6 +5,23 @@ from typing import Optional
 
 import httpx
 
+from .guardrails import mask_pii
+
+_client: Optional[httpx.Client] = None
+
+
+def _http() -> httpx.Client:
+    """One pooled client per process: reuses the TLS connection instead of a new handshake per call."""
+    global _client
+    if _client is None:
+        _client = httpx.Client(base_url="https://api.anthropic.com", timeout=40.0,
+                               limits=httpx.Limits(max_connections=10, max_keepalive_connections=5))
+    return _client
+
+
+def _headers() -> dict:
+    return {"x-api-key": os.environ["ANTHROPIC_API_KEY"], "anthropic-version": "2023-06-01", "content-type": "application/json"}
+
 SYSTEM = """You are GigSaathi, a friendly assistant for gig and informal workers in India.
 Rules:
 - Reply ONLY in the language named in "Reply language" (native script; Hinglish = Roman Hindi). Never mix in another language, except proper names, numbers and scheme names. Use very simple short sentences.
@@ -24,18 +41,14 @@ def compose(user_text: str, facts: str, reply_language: str = "", timeout: float
     if not enabled():
         return None
     try:
-        r = httpx.post(
-            "https://api.anthropic.com/v1/messages",
-            headers={
-                "x-api-key": os.environ["ANTHROPIC_API_KEY"],
-                "anthropic-version": "2023-06-01",
-                "content-type": "application/json",
-            },
+        r = _http().post(
+            "/v1/messages",
+            headers=_headers(),
             json={
                 "model": os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-5-5"),
                 "max_tokens": 400,
                 "system": SYSTEM,
-                "messages": [{"role": "user", "content": f"FACTS:\n{facts}\n\nReply language: {reply_language or 'same as the worker'}\n\nWORKER MESSAGE:\n{user_text}"}],
+                "messages": [{"role": "user", "content": f"FACTS:\n{facts}\n\nReply language: {reply_language or 'same as the worker'}\n\nWORKER MESSAGE:\n{mask_pii(user_text)}"}],
             },
             timeout=timeout,
         )
@@ -53,10 +66,9 @@ def complete(system: str, user: str, max_tokens: int = 600, image_b64: str = "",
     content = []
     if image_b64:
         content.append({"type": "image", "source": {"type": "base64", "media_type": media_type, "data": image_b64}})
-    content.append({"type": "text", "text": user})
+    content.append({"type": "text", "text": mask_pii(user)})   # documents can carry Aadhaar/PAN/card numbers
     try:
-        r = httpx.post("https://api.anthropic.com/v1/messages",
-                       headers={"x-api-key": os.environ["ANTHROPIC_API_KEY"], "anthropic-version": "2023-06-01", "content-type": "application/json"},
+        r = _http().post("/v1/messages", headers=_headers(),
                        json={"model": os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-5-5"), "max_tokens": max_tokens, "system": system,
                              "messages": [{"role": "user", "content": content}]}, timeout=timeout)
         r.raise_for_status()

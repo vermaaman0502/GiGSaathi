@@ -12,19 +12,38 @@
   --accent: 138 50% 88%; --accent-foreground: 142 64% 18%;
   --destructive: 0 72% 42%; --destructive-foreground: 0 0% 100%;
   --warning: 38 92% 90%; --warning-foreground: 28 80% 25%;
-  --border: 140 25% 82%; --input: 140 25% 78%; --ring: 142 64% 30%; --radius: 0.75rem;
+  --border: 140 22% 88%; --input: 140 20% 80%; --ring: 142 64% 30%; --radius: 0.75rem;
+  --success: 142 64% 24%; --success-soft: 141 70% 93%;
+  --info: 217 80% 45%; --info-soft: 214 90% 95%;
+  --amber: 32 90% 40%; --amber-soft: 40 95% 93%;
+  --shadow: 0 1px 2px hsl(150 30% 10% / 0.04), 0 4px 16px -4px hsl(150 30% 10% / 0.08);
 }
 .dark {
   --background: 150 25% 7%; --foreground: 138 30% 94%; --card: 150 22% 11%; --card-foreground: 138 30% 94%;
   --primary: 142 55% 42%; --primary-foreground: 150 30% 6%; --secondary: 150 18% 17%; --secondary-foreground: 138 30% 92%;
   --muted: 150 16% 16%; --muted-foreground: 140 12% 68%; --accent: 150 20% 20%; --accent-foreground: 138 30% 94%;
-  --destructive: 0 70% 55%; --warning: 38 60% 18%; --warning-foreground: 38 90% 80%; --border: 150 14% 24%; --input: 150 14% 28%; --ring: 142 55% 50%;
+  --destructive: 0 70% 55%; --warning: 38 60% 18%; --warning-foreground: 38 90% 80%; --border: 150 14% 18%; --input: 150 14% 26%; --ring: 142 55% 50%;
+  --success: 142 60% 55%; --success-soft: 145 40% 14%; --info: 214 90% 70%; --info-soft: 217 40% 16%;
+  --amber: 38 92% 62%; --amber-soft: 32 45% 15%;
+  --shadow: 0 1px 2px hsl(0 0% 0% / 0.3), 0 8px 24px -8px hsl(0 0% 0% / 0.5);
 }
 html[data-contrast="high"] { --foreground: 0 0% 0%; --border: 0 0% 25%; --input: 0 0% 25%; --muted-foreground: 0 0% 15%; --primary: 142 80% 14%; }
 html[data-contrast="high"].dark { --foreground: 0 0% 100%; --border: 0 0% 75%; --muted-foreground: 0 0% 90%; --primary: 142 70% 55%; }
 html[data-text="large"] { font-size: 112.5%; }
 html[data-text="xlarge"] { font-size: 125%; }
-body { background: hsl(var(--background)); color: hsl(var(--foreground)); }
+@layer base {
+  /* without this every `border` falls back to currentColor (near-black / white) */
+  *, ::before, ::after { border-color: hsl(var(--border)); }
+  body { background: hsl(var(--background)); color: hsl(var(--foreground)); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  h1, h2, h3 { letter-spacing: -0.015em; }
+  ::selection { background: hsl(var(--primary) / 0.2); }
+}
+.num { font-variant-numeric: tabular-nums; }
+.hero {
+  background: radial-gradient(120% 140% at 100% 0%, hsl(142 60% 34%) 0%, transparent 55%),
+              linear-gradient(135deg, hsl(142 64% 22%) 0%, hsl(152 60% 16%) 100%);
+}
+.pb-safe { padding-bottom: env(safe-area-inset-bottom); }
 *:focus-visible { outline: 3px solid hsl(var(--ring)); outline-offset: 2px; }
 .skeleton { background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--accent)) 50%, hsl(var(--muted)) 75%); background-size: 200% 100%; animation: sk 1.4s infinite; border-radius: var(--radius); }
 @keyframes sk { 0% { background-position: 200% 0 } 100% { background-position: -200% 0 } }
