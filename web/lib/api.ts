@@ -1,6 +1,6 @@
 import type * as T from "./types";
 
-export const API = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace(/\/$/, "");
+export const API = (process.env.NEXT_PUBLIC_API_URL || "https://gigsaathi-silk.vercel.app").replace(/\/$/, "");
 
 export class ApiError extends Error {
   constructor(message: string, public status: number) { super(message); }
