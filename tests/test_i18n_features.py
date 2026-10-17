@@ -191,3 +191,16 @@ def test_marathi_vs_hindi_and_unsupported_script():
     assert i18n.detect("मला पेन्शन योजना हवी आहे") == "mr"
     assert i18n.detect("مجھے پنشن چاہیے") == "ur"
     assert orchestrator.handle("u", "مجھے پنشن چاہیے")["lang"] == "ur"       # detected; templates fall back to English
+
+
+def test_chip_phrases_in_hindi_and_punjabi_route_correctly():
+    r = orchestrator.handle("u", "ट्रिप किराया 120 दूरी 8 km")
+    assert r["intent"] == "trip" and r["lang"] == "hi" and "120" in r["reply"]
+    r = orchestrator.handle("u", "ਟ੍ਰਿਪ ਕਿਰਾਇਆ 120 ਦੂਰੀ 8 km")
+    assert r["intent"] == "trip" and r["lang"] == "pa"
+    assert orchestrator.handle("u", "आज 850 रुपये कमाया")["intent"] == "income"
+    assert orchestrator.handle("u", "ਅੱਜ 850 ਕਮਾਏ")["intent"] == "income"
+    r = orchestrator.handle("u", "लोन 10000 emi 1200 for 12 महीने")
+    assert r["intent"] == "loan" and r["lang"] == "hi"
+    r = orchestrator.handle("u", "ਕਰਜ਼ਾ 10000 emi 1200 for 12 ਮਹੀਨੇ")
+    assert r["intent"] == "loan" and r["lang"] == "pa"

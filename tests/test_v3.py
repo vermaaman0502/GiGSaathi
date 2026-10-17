@@ -285,3 +285,11 @@ def test_user_id_validation_export_and_deletion():
     assert client.get(f"/api/shifts/{u}").json()["shifts"] == []
     assert len(client.get(f"/api/shifts/{other}").json()["shifts"]) == 1                # others untouched
     assert client.get("/health").json()["status"] == "ok"
+
+
+def test_expense_endpoint_feeds_leak_finder():
+    u = new_user()
+    for _ in range(5):
+        r = client.post("/api/expenses", json={"user": u, "category": "Chai", "amount": 20}).json()
+    assert r["leaks"][0]["category"] == "chai" and r["leaks"][0]["times"] == 5
+    assert client.post("/api/expenses", json={"user": u, "amount": 0}).status_code == 422

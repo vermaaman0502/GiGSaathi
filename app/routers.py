@@ -245,6 +245,20 @@ def opportunities(user: str, lang: str = "en"):
     return opps.build(uid(user), lang)
 
 
+class ExpenseIn(BaseModel):
+    user: str
+    category: str = Field("other", max_length=30)
+    amount: float = Field(..., gt=0)
+    note: str = Field("", max_length=100)
+
+
+@r.post("/expenses")
+def expense_add(b: ExpenseIn):
+    u = uid(b.user)
+    store.add(u, "expense", b.amount, b.category.strip().lower(), b.note)
+    return {"leaks": earn.leaks(u)}
+
+
 # ---------- wage diary ----------
 @r.post("/wage-diary")
 def diary_add(b: DiaryIn):

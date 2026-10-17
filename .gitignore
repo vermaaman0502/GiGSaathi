@@ -6,3 +6,8 @@ __pycache__/
 .vercel/
 .pytest_cache/
 .vercel
+node_modules/
+.next/
+web/.env*
+!web/.env.example
+*.tsbuildinfo

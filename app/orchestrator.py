@@ -11,11 +11,11 @@ NUM = re.compile(r"\d+(?:\.\d+)?")
 
 SOS_W = ["sos", "emergency", "khatre", "खतरे", "জরুরি", "அவசரம்", "అత్యవసరం", "आणीबाणी", "કટોકટી", "ತುರ್ತು", "അടിയന്തരം", "ਐਮਰਜੈਂਸੀ", "ଜରୁରୀ"]
 EXPENSE_W = ["spent", "kharcha", "kharch", "kharid", "खर्च", "expense", "খরচ", "செலவு", "ఖర్చు", "ખર્ચ", "ಖರ್ಚು", "ചെലവ്", "ਖਰਚ", "ଖର୍ଚ୍ଚ"]
-INCOME_W = ["earned", "kamaya", "kamai", "kamaye", "कमाया", "कमाई", "कमावले", "income today", "আয়", "சம்பாதித்", "సంపాదించ", "કમાયા", "ગળ", "ಗಳಿಸ", "സമ്പാദിച്ച", "ਕਮਾਏ", "ଆୟ"]
+INCOME_W = ["earned", "kamaya", "kamai", "kamaye", "कमाया", "कमाए", "कमाई", "कमावले", "income today", "আয়", "சம்பாதித்", "సంపాదించ", "કમાયા", "ગળ", "ಗಳಿಸ", "സമ്പാദിച്ച", "ਕਮਾਏ", "ଆୟ"]
 SUMMARY_W = ["summary", "hisab", "hisaab", "हिसाब", "हिशोब", "হিসাব", "கணக்கு", "లెక్క", "હિસાબ", "ಲೆಕ್ಕ", "കണക്ക്", "ਹਿਸਾਬ", "ହିସାବ"]
 LOAN_W = ["loan", "emi", "interest", "byaj", "ब्याज", "लोन", "व्याज", "সুদ", "கடன்", "రుణం", "લોન", "ಸಾಲ", "വായ്പ", "ਕਰਜ਼ਾ", "ଋଣ"]
 MONTH_W = ["months", "month", "mahine", "महीने", "महिने", "মাস", "மாத", "నెల", "મહિના", "ತಿಂಗಳ", "മാസ", "ਮਹੀਨ", "ମାସ"]
-KM_W = ["km", "किमी", "কিমি", "கிமீ", "కి.మీ", "કિમી", "ಕಿಮೀ", "കി.മീ", "ਕਿਮੀ", "କିମି"]
+KM_W = ["km", "किलोमीटर", "ਕਿਲੋਮੀਟਰ", "किमी", "কিমি", "கிமீ", "కి.మీ", "કિમી", "ಕಿಮೀ", "കി.മീ", "ਕਿਮੀ", "କିମି"]
 GRIEV_W = ["complaint", "grievance", "deactivat", "blocked", "shikayat", "शिकायत", "तक्रार", "অভিযোগ", "புகார்", "ఫిర్యాదు", "ફરિયાદ", "ದೂರು", "പരാതി", "ਸ਼ਿਕਾਇਤ", "ଅଭିଯୋଗ", "id band"]
 DIARY_W = ["owes", "baki", "bakaya", "बकाया", "due", "बाकी"]
 SAFE_W = ["safe to spend", "daily limit", "kitna kharch", "कितना खर्च"]
@@ -44,7 +44,7 @@ def _before(text: str, words: List[str]) -> Optional[float]:
 def detect_intent(low: str) -> str:
     if _has(low, SOS_W):
         return "sos"
-    if _has(low, ["worth", "should i accept", "trip", "ride", "order lena", "सवारी"]) and _before(low, KM_W) is not None:
+    if _has(low, ["worth", "should i accept", "trip", "ride", "order lena", "सवारी", "ट्रिप", "ਟ੍ਰਿਪ", "ਸਵਾਰੀ"]) and _before(low, KM_W) is not None:
         return "trip"
     if _has(low, LOAN_W) and _has(low, MONTH_W):
         return "loan"
@@ -86,7 +86,7 @@ def handle(user: str, raw_text: str, lang: str = "auto", prefer: str = "") -> Di
     facts, sources, template = "", [], ""
 
     if intent == "trip":
-        fare = _after(low, ["fare", "pay", "kamai", "rs", "₹"]) or 0.0
+        fare = _after(low, ["fare", "pay", "kamai", "kiraya", "किराया", "ਕਿਰਾਇਆ", "rs", "₹"]) or 0.0
         km = _before(low, KM_W) or 0.0
         mins = _before(low, ["min", "minute", "मिनट"]) or km * 3
         r = earnings.trip_worth(fare=fare, distance_km=km, time_min=mins, return_km=km * 0.5)
